@@ -1,0 +1,174 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  background-color: var(--background-color);
+}
+.header {
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--background-color);
+  color: var(--input-color);
+}
+.iconLogo {
+  width: 73px;
+  height: 16px;
+  position: relative;
+  overflow: hidden;
+  margin-left: 1px;
+  text-decoration: none;
+  z-index: 1;
+  color: var(--input-color);
+  svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    object-fit: contain;
+  }
+}
+.containerButtons {
+  display: none;
+}
+.searchButton {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  color: var(--input-color);
+}
+.containerMenu {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  color: var(--input-color);
+}
+.themeIcon {
+  display: none;
+}
+.buttons {
+  width: 100%;
+  height: 100%;
+  width: 100%;
+  height: 32px;
+  position: absolute;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 20px;
+}
+.search {
+  width: 100%;
+}
+@include screen(tablet) {
+  .header {
+    height: 88px;
+    border-bottom: none;
+  }
+  .search {
+    display: none;
+  }
+  .searchButton {
+    display: none;
+  }
+}
+
+@include screen(tablet_lg) {
+  .header {
+    height: 80px;
+    border-bottom: none;
+  }
+  .iconLogo {
+    width: 91px;
+    height: 20px;
+  }
+  .containerMenu {
+    display: none;
+  }
+  .containerButtons {
+    width: 235px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+  }
+  .buttonContainer {
+    display: flex;
+    gap: 20px;
+    width: 235px;
+    background-color: transparent;
+  }
+  .buttonItem {
+    background-color: transparent;
+    border: none;
+    @include fonts("Cormorant SC", sans-serif, 700, 16px, 128%);
+    color: var(--input-color);
+    &:hover {
+      color: var(--text-color);
+    }
+  }
+  .themeContainer {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.5s ease;
+    &:hover {
+      cursor: pointer;
+    }
+    background-color: var(--button-theme);
+    svg {
+      position: absolute;
+    }
+  }
+}
+
+@include screen(desktop) {
+  .header {
+    height: 80px;
+    border-bottom: none;
+  }
+  .iconLogo {
+    width: 91px;
+    height: 20px;
+  }
+  .containerMenu {
+    display: none;
+  }
+  .containerButtons {
+    display: flex;
+  }
+  .buttonContainer {
+    display: flex;
+    gap: 20px;
+    width: 235px;
+    background-color: transparent;
+  }
+  .buttonItem {
+    background-color: transparent;
+    border: none;
+    @include fonts("Cormorant SC", san-serif, 700, 16px, 128%);
+    color: var(--input-color);
+  }
+  .themeContainer {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    position: relative;
+    svg {
+      position: absolute;
+    }
+    background-color: var(--button-theme);
+  }
+}

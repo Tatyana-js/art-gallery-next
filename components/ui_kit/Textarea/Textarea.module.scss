@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.label {
+  transition: all 0.5s ease;
+  @include fonts("Inter", sans-serif, 700, 12px, 100%);
+  color: var(--text-color);
+}
+.textarea {
+  width: 100%;
+  padding: 12px 16px 6px;
+  min-height: 150px;
+  max-height: 300px;
+  overflow-y: scroll;
+  // scrollbar-width: thin;
+  transition: all 0.5s ease;
+  @include fonts("Inter", sans-serif, 300, 16px, 140%);
+  background-color: var(--input-background);
+  border: var(--border_checkbox);
+  color: var(--textarea-color);
+  &:hover {
+    border: var(--input-hover);
+    border-radius: 4px;
+  }
+  &:focus-visible {
+    outline: none;
+    border: 1px solid var(--input-color);
+    border-radius: 4px;
+  }
+}
+.errorContainer {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.iconContainer {
+  width: 24px;
+  height: 24px;
+  position: relative;
+}
+.errorMessage {
+  color: var(--accept-error);
+  @include fonts("Inter", sans-serif, 300, 12px, 140%);
+}

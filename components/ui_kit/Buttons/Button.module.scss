@@ -1,0 +1,90 @@
+@mixin textDecoration($color) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 1px;
+  text-decoration-color: $color;
+}
+.defaultButton {
+  width: 200px;
+  height: 47px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  border: none;
+  color: var(--primary-white);
+  transition: all 0.5s ease;
+  @include fonts("Inter", sans-serif, 700, 12px, 100%);
+  background-color: var(--button-background);
+  &:hover {
+    box-shadow: var(--shadow-hover);
+  }
+  &:focus {
+    box-shadow: var(--shadow-focus);
+  }
+  &:disabled {
+    opacity: 50%;
+  }
+}
+.text {
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.5s ease;
+  background-color: transparent;
+  @include fonts("Inter", sans-serif, 700, 12px, 100%);
+  color: var(--input-color);
+  @include textDecoration(var(--input-color));
+  &:hover {
+    color: var(--text-color);
+    @include textDecoration(var(--text-color));
+  }
+  &:disabled {
+    color: var(--input-color);
+    @include textDecoration(var(--placeholder-color));
+  }
+  svg {
+    width: 12px;
+    height: 12px;
+    position: static; // Отменяет absolute по умолчанию
+    transform: none;
+  }
+}
+.icon {
+  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: all 0.5s ease;
+  background: transparent;
+  position: relative;
+  color: var(--button-icon);
+  &:hover {
+    color: var(--text-color);
+  }
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+.circleIcon {
+  border-radius: 50px;
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s ease;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  color: var(--input-color);
+  &:hover {
+    background-color: var(--background-color);
+  }
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,31 @@
+// @use '@/styles/mixins.scss' as *;
+
+.galleryList {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+@include screen(tablet) {
+  .galleryList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding-bottom: 100px;
+  }
+}
+
+@include screen(tablet_lg) {
+  .galleryList {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+@include screen(desktop) {
+  .galleryList {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}

@@ -1,0 +1,89 @@
+.mainPage {
+  width: 100%;
+  height: 100%;
+  padding-top: 36px;
+  padding-bottom: 80px;
+  position: relative;
+  background-color: var(--background-color);
+}
+.loadButton {
+  width: 72px;
+  height: 15px;
+  margin: 0 auto;
+  margin-top: 32px;
+}
+.filterButton {
+  width: 28px;
+  height: 28px;
+  right: 20px;
+  top: 32px;
+  border-radius: 10%;
+  background-color: var(--button-theme);
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+.messageContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.noResults {
+  width: 100%;
+  @include fonts("Inter", san-serif, 300, 16px, 140%);
+  background-color: transparent;
+  color: var(--input-color);
+}
+.searchValue {
+  font-weight: 500;
+}
+.message {
+  @include fonts("Inter", san-serif, 300, 12px, 140%);
+  background-color: transparent;
+  color: var(--secondary-gray);
+}
+@include screen(tablet) {
+  .mainPage {
+    padding-top: 47px;
+    padding-bottom: 100px;
+  }
+  .searchButton {
+    display: block;
+    width: 100%;
+  }
+  .loadButton {
+    margin-top: 40px;
+  }
+  .buttonContainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: 33px;
+  }
+  .buttons {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    align-items: center;
+  }
+  .filterButton {
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    color: var(--input-color);
+  }
+}
+@include screen(tablet_lg) {
+  .buttonContainer {
+    grid-template-columns: 1fr 1fr minmax(0, 1fr);
+  }
+  .buttons {
+    grid-column: 3/4;
+    justify-content: end;
+  }
+}

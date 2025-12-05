@@ -1,0 +1,42 @@
+@font-face {
+  font-family: "Cormorant SC";
+  src: url("../../public/fonts/CormorantSC.woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../public/fonts/Inter.woff2");
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  min-height: 100vh;
+  padding-bottom: 20px;
+  background-color: var(--background-color);
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@include screen(tablet_lg) {
+  .container {
+    padding-bottom: 40px;
+    padding: 0 100px;
+  }
+}
+
+@include screen(desktop) {
+  .container {
+    max-width: 1440px;
+    padding: 0 100px;
+  }
+}

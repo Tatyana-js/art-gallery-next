@@ -1,0 +1,72 @@
+.painting {
+  width: 100%;
+  position: relative;
+  aspect-ratio: 1.507;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: 200% 100% !important;
+    animation: wave 2s infinite linear !important;
+    z-index: 2;
+  }
+  background-color: var(--skeleton);
+  &::before {
+    background: var(--skeleton-gradient);
+  }
+}
+.container {
+  width: 300px;
+  height: 82px;
+  min-width: 236px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  bottom: 0;
+  left: 0;
+  border: none;
+  padding: 20px;
+  padding-right: 36px;
+  background-color: var(--background-color);
+}
+.name {
+  width: 214px;
+  height: 19px;
+  background-color: var(--skeleton);
+}
+.details {
+  width: 70px;
+  height: 15px;
+  background-color: var(--skeleton);
+}
+@include screen(tablet) {
+  .container {
+    width: 90%;
+    padding: 12px;
+    .name {
+      padding-right: 20px;
+    }
+  }
+  .details {
+    margin-top: 8px;
+  }
+}
+@include screen(tablet_lg) {
+  .container {
+    width: 85%;
+    padding: 20px;
+  }
+}
+
+@keyframes wave {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}

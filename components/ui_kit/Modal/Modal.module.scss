@@ -1,0 +1,195 @@
+.modal_overlay {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  animation: closeOverlay 0.3s ease;
+  opacity: 0;
+  overflow-y: auto;
+}
+.active {
+  animation: showOverlay 0.3s ease;
+  opacity: 1;
+  background-color: var(--active-menu-background);
+}
+.menuModal {
+  width: 75%;
+  height: 100%;
+  position: fixed;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(100%);
+  animation: closeModal 0.3s ease;
+  z-index: 10;
+  color: var(--input-color);
+  background-color: var(--checkbox-background);
+}
+.activeMenuModal {
+  transform: translateX(0);
+  animation: showModal 0.3s ease;
+}
+
+.clearButton {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+  &--light {
+    color: $primary-dark-gray;
+  }
+  &--dark {
+    color: $primary-light-gray;
+  }
+}
+.addArtist {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: auto;
+  &--light {
+    background-color: $primary-white;
+  }
+  &--dark {
+    background-color: $primary-black;
+  }
+}
+.authModal {
+  width: 100%;
+  height: 100%;
+  &--light {
+    background-color: $primary-white;
+  }
+  &--dark {
+    background-color: $primary-black;
+  }
+}
+.deleteArtist {
+  width: 100%;
+  height: 232px;
+  position: absolute;
+  bottom: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  &--light {
+    background-color: $primary-white;
+  }
+  &--dark {
+    background-color: $primary-black;
+  }
+}
+.paintingModal {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  &--light {
+    background-color: $primary-white;
+  }
+  &--dark {
+    background-color: $primary-black;
+  }
+}
+.sliderModal {
+  width: 100%;
+  height: 100vh;
+}
+@include screen(tablet) {
+  .menuModal {
+    width: 60%;
+  }
+  .clearButton {
+    right: 24px;
+    top: 36px;
+  }
+  .deleteArtist {
+    width: 320px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .clearButton {
+      display: flex;
+    }
+  }
+  .paintingModal {
+    width: 693px;
+    height: 723px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+@include screen(tablet_lg) {
+  .authModal {
+    width: fit-content;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between;
+  }
+  .addArtist {
+    width: 800px;
+    height: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes showOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes closeOverlay {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes showModal {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes closeModal {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

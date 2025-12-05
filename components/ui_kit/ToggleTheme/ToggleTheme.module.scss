@@ -1,0 +1,30 @@
+@use '@/styles/variables.scss' as *;
+
+.buttonTheme {
+  border: none;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background-color: transparent;
+  &:hover {
+    cursor: pointer;
+  }
+  button {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+.iconTheme {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  svg {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

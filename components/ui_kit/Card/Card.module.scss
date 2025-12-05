@@ -1,0 +1,185 @@
+.painting {
+  width: 100%;
+  position: relative;
+  aspect-ratio: 1.507;
+  overflow: hidden;
+  border: none;
+  clip-path: inset(0 0 1px 1px);
+  transform: translateZ(0);
+  background-color: var(--button-theme);
+  &:hover {
+    .cardImage {
+      transform: scale(1.03);
+      transition: transform 0.5s ease;
+    }
+  }
+}
+.paintingArtist {
+  height: 450px;
+  aspect-ratio: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--button-theme);
+  &:hover {
+    .cardImage {
+      transform: none !important;
+    }
+  }
+}
+.cardImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.linkboxOverlay {
+  position: static;
+  &::before {
+    content: "";
+    cursor: inherit;
+    display: block;
+    position: absolute;
+  }
+}
+.container {
+  max-width: 100%;
+  min-width: 236px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  left: 0;
+  border: none;
+  padding: 8px 12px;
+  padding-right: 36px;
+  @include fonts("Cormorant SC", sans-serif, 500, 12px, 100%);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+.line {
+  position: absolute;
+  width: 24px;
+  height: 100%;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  align-items: center;
+  transition: all 0.5s ease;
+  background-color: var(--accent-color);
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+.name {
+  word-wrap: break-word;
+}
+.details {
+  margin-top: 4px;
+  @include fonts("Inter", sans-serif, 700, 8px, 100%);
+  color: var(--accent-color);
+}
+.containerArtist {
+  min-width: 300px;
+  padding: 20px;
+  gap: 8px;
+  border: none;
+  .line {
+    display: none;
+  }
+  .name {
+    order: 2;
+    @include fonts("Cormorant SC", sans-serif, 600, 32px, 100%);
+    color: var(--accent-color);
+  }
+  .details {
+    order: 1;
+    @include fonts("Cormorant SC", sans-serif, 500, 12px, 100%);
+    color: var(--button-icon);
+  }
+}
+.emptyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 40px;
+  svg {
+    position: static;
+    transform: translate(0);
+  }
+}
+.emptyMessage {
+  color: var(--primary-dark-gray);
+  @include fonts("Inter", sans-serif, 900, 20px, 100%);
+}
+@include screen(tablet) {
+  .container {
+    width: 90%;
+    padding: 12px;
+    @include fonts("Cormorant SC", sans-serif, 500, 16px, 100%);
+    .name {
+      word-wrap: break-word;
+      padding-right: 20px;
+    }
+  }
+  .containerArtist {
+    width: 500px;
+    padding: 20px;
+    .line {
+      display: flex;
+      position: absolute;
+      width: 2px;
+      height: 48px;
+      left: 0;
+      top: 40px;
+      transition: all 0.5s ease;
+      background-color: var(--accent-color);
+      svg {
+        display: none;
+      }
+    }
+  }
+  .details {
+    margin-top: 8px;
+    @include fonts("Inter", sans-serif, 700, 12px, 100%);
+  }
+}
+
+@include screen(tablet_lg) {
+  .paintingArtist {
+    position: relative;
+    margin-left: 440px;
+    width: 1000px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container {
+    width: 85%;
+    padding: 20px;
+    @include fonts("Cormorant SC", sans-serif, 500, 16px, 100%);
+  }
+  .containerArtist {
+    display: none;
+  }
+  .line {
+    display: flex;
+    position: absolute;
+    width: 3px;
+    height: 42px;
+    left: 0;
+    top: 20px;
+    transition: all 0.5s ease;
+    svg {
+      display: none;
+    }
+    background-color: var(--accent-color);
+  }
+}
