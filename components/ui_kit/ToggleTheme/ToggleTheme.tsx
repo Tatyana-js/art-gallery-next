@@ -1,8 +1,8 @@
 "use client";
 import { FC, memo } from "react";
 import styles from "./ToggleTheme.module.scss";
-import MoonIcon from "@/public/icons/MoonIcon";
-import SunIcon from "@/public/icons/SunIcon";
+import MoonIcon from "@/components/icons/MoonIcon";
+import SunIcon from "@/components/icons/SunIcon";
 import Button from "../Buttons";
 import useTheme from "@/hooks/useTheme";
 

@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useOnClickOutside } from "usehooks-ts";
 import styles from "./Modal.module.scss";
-import ClearIcon from "@/public/icons/ClearIcon";
+import ClearIcon from "@/components/icons/ClearIcon";
 
 type ModalVariant =
   | "menuModal"

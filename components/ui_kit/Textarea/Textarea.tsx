@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { FC } from "react";
 import styles from "./Textarea.module.scss";
-import ErrorIcon from "@/public/icons/ErrorIcon";
+import ErrorIcon from "@/components/icons/ErrorIcon";
 
 export interface ITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;

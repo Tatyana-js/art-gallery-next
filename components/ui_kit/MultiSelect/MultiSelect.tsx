@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useState } from "react";
 import styles from "./MultiSelect.module.scss";
 import type { IGenre } from "@/types/Artist";
-import SelectButton from "@/public/icons/SelectButton";
+import SelectButton from "@/components/icons/SelectButton";
 import Checkbox from "../Checkbox";
 import Input from "../Input/Input";
 import Label from "../Label/Label";

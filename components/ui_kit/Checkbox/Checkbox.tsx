@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styles from "./Checkbox.module.scss";
-import Success from "@/public/icons/Success";
+import Success from "@/components/icons/Success";
 
 export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   text?: string;

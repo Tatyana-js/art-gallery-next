@@ -3,8 +3,8 @@ import { FC } from "react";
 import Image from "next/image";
 import styles from "./Card.module.scss";
 import getImageSrc from "@/lib/utils/getImageSrc";
-import ComeIn from "@/public/icons/ComeIn";
-import EmptyImage from "@/public/image/EmptyImage";
+import ComeIn from "@/components/icons/ComeIn";
+import EmptyImage from "@/components/image/EmptyImage";
 
 export interface ICardProps {
   name?: string;

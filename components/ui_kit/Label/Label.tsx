@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styles from "./Label.module.scss";
-import ClearIcon from "@/public/icons/ClearIcon";
+import ClearIcon from "@/components/icons/ClearIcon";
 
 export interface LabelProps extends React.HTMLAttributes<HTMLSpanElement> {
   onClick?: () => void;

@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { FC, FormEvent } from "react";
 import styles from "./Search.module.scss";
-import ClearIcon from "@/public/icons/ClearIcon";
-import SearchIcon from "@/public/icons/SearchIcon";
+import ClearIcon from "@/components/icons/ClearIcon";
+import SearchIcon from "@/components/icons/SearchIcon";
 
 import Input from "../Input/Input";
 
