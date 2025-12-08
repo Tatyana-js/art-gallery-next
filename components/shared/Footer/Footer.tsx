@@ -1,8 +1,8 @@
 import { FC } from "react";
 import styles from "./Footer.module.scss";
-import FacebookIcon from "@/public/icons/FacebookIcon";
-import InstagrammIcon from "@/public/icons/InstagrammIcon";
-import VkIcon from "@/public/icons/VkIcon";
+import FacebookIcon from "@/components/icons/FacebookIcon";
+import InstagrammIcon from "@/components/icons/InstagrammIcon";
+import VkIcon from "@/components/icons/VkIcon";
 
 const Footer: FC = () => (
   <footer className={styles.footer}>

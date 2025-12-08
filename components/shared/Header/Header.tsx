@@ -3,12 +3,12 @@ import useTheme from "@/hooks/useTheme";
 import { FC } from "react";
 import styles from "./Header.module.scss";
 import Link from "next/link";
-import IconLogo from "@/public/icons/IconLogo";
-import SunIcon from "@/public/icons/SunIcon";
-import MoonIcon from "@/public/icons/MoonIcon";
+import IconLogo from "@/components/icons/IconLogo";
+import SunIcon from "@/components/icons/SunIcon";
+import MoonIcon from "@/components/icons/MoonIcon";
 import Search from "@/components/ui_kit/Search";
-import SearchIcon from "@/public/icons/SearchIcon";
-import IconMenu from "@/public/icons/IconMenu";
+import SearchIcon from "@/components/icons/SearchIcon";
+import IconMenu from "@/components/icons/IconMenu";
 
 const Header: FC = ({}) => {
   const { theme, toggleTheme } = useTheme();
