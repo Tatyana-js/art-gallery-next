@@ -1,7 +1,4 @@
-export const setTokens = (tokens: {
-  accessToken: string;
-  refreshToken: string;
-}) => {
+export const setTokens = (tokens: { accessToken: string; refreshToken: string }) => {
   localStorage.setItem('accessToken', tokens.accessToken);
   localStorage.setItem('refreshToken', tokens.refreshToken);
 };

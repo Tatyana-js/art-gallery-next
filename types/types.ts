@@ -32,3 +32,13 @@ export interface IFilterModalState {
     selected: string | null;
   };
 }
+
+export type ModalVariant =
+  | 'menuModal'
+  | 'authorization'
+  | 'registeration'
+  | 'addArtist'
+  | 'deleteArtist'
+  | 'painting'
+  | 'slider'
+  | 'filter';
