@@ -1,11 +1,5 @@
 const IconLogo = () => (
-  <svg
-    width="91"
-    height="20"
-    viewBox="0 0 91 20"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="91" height="20" viewBox="0 0 91 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M1.12081 1.11949V2.10377H9.40729V3.2327H1.12081V5.33647H0V0H9.40729V1.11949H1.12081Z"
       fill="currentColor"

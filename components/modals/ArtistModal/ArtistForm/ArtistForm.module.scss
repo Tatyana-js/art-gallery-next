@@ -1,0 +1,26 @@
+@use '@/styles/variables.scss' as *;
+@use '@/styles/mixins.scss' as *;
+
+.formContainer {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+}
+.buttonContainer {
+  margin: 0 auto;
+  margin-top: 8px;
+}
+@include screen(tablet) {
+  .formContainer {
+    width: 340px;
+    gap: 40px;
+  }
+}
+@include screen(tablet_lg) {
+  .buttonContainer {
+    margin-left: 0;
+    margin-top: 20px;
+  }
+}

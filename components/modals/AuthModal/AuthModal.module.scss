@@ -1,0 +1,75 @@
+.containerInfo {
+  height: 100%;
+  padding: 130px 26px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+.authImage {
+  display: none;
+}
+.title {
+  @include fonts('Cormorant SC', sans-serif, 600, 32px, 100%);
+  color: var(--text-color);
+}
+.formContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  input {
+    height: 32px;
+  }
+}
+.signUpMessage {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  margin-top: 20px;
+  @include fonts('Inter', sans-serif, 300, 12px, 140%);
+  color: var(--input-color);
+}
+.signUpButtons {
+  @include fonts('Inter', sans-serif, 500, 16px, 140%);
+  color: var(--label-color);
+  background-color: transparent;
+  border: none;
+}
+@include screen(tablet) {
+  .containerInfo {
+    padding: 270px 190px;
+  }
+  .signUpMessage {
+    order: 2;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .formContainer {
+    order: 3;
+  }
+  .buttonContainer {
+    margin-top: 20px;
+  }
+}
+
+@include screen(tablet_lg) {
+  .authImage {
+    display: flex;
+    position: relative;
+    width: 500px;
+    height: auto;
+    overflow: hidden;
+    svg {
+      position: absolute;
+      width: 100%;
+      height: auto;
+    }
+  }
+  .containerInfo {
+    width: 50%;
+    padding: 130px 85px;
+  }
+}

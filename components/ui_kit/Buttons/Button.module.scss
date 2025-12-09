@@ -14,7 +14,7 @@
   border: none;
   color: var(--primary-white);
   transition: all 0.5s ease;
-  @include fonts("Inter", sans-serif, 700, 12px, 100%);
+  @include fonts('Inter', sans-serif, 700, 12px, 100%);
   background-color: var(--button-background);
   &:hover {
     box-shadow: var(--shadow-hover);
@@ -33,7 +33,7 @@
   gap: 12px;
   transition: all 0.5s ease;
   background-color: transparent;
-  @include fonts("Inter", sans-serif, 700, 12px, 100%);
+  @include fonts('Inter', sans-serif, 700, 12px, 100%);
   color: var(--input-color);
   @include textDecoration(var(--input-color));
   &:hover {

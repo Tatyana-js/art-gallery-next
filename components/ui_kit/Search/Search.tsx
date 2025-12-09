@@ -1,10 +1,10 @@
-import clsx from "clsx";
-import { FC, FormEvent } from "react";
-import styles from "./Search.module.scss";
-import ClearIcon from "@/components/icons/ClearIcon";
-import SearchIcon from "@/components/icons/SearchIcon";
+import clsx from 'clsx';
+import { FC, FormEvent } from 'react';
+import styles from './Search.module.scss';
+import ClearIcon from '@/components/icons/ClearIcon';
+import SearchIcon from '@/components/icons/SearchIcon';
 
-import Input from "../Input/Input";
+import Input from '../Input/Input';
 
 interface ISearchProps {
   error?: boolean;
@@ -28,7 +28,7 @@ const Search: FC<ISearchProps> = ({
   };
 
   const handleClear = () => {
-    onChange("");
+    onChange('');
   };
 
   return (
@@ -44,12 +44,7 @@ const Search: FC<ISearchProps> = ({
       >
         <SearchIcon />
       </button>
-      <Input
-        type="text"
-        placeholder="Search"
-        onChange={handleInputChange}
-        value={value}
-      />
+      <Input type="text" placeholder="Search" onChange={handleInputChange} value={value} />
       {value && (
         <button
           type="button"

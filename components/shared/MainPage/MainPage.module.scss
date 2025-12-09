@@ -32,7 +32,7 @@
 }
 .noResults {
   width: 100%;
-  @include fonts("Inter", san-serif, 300, 16px, 140%);
+  @include fonts('Inter', san-serif, 300, 16px, 140%);
   background-color: transparent;
   color: var(--input-color);
 }
@@ -40,7 +40,7 @@
   font-weight: 500;
 }
 .message {
-  @include fonts("Inter", san-serif, 300, 12px, 140%);
+  @include fonts('Inter', san-serif, 300, 12px, 140%);
   background-color: transparent;
   color: var(--secondary-gray);
 }

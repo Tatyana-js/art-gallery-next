@@ -1,8 +1,8 @@
-import { FC } from "react";
-import styles from "./MainPage.module.scss";
-import type IArtist from "@/types/Artist.ts";
-import Card from "@/components/ui_kit/Card";
-import Grid from "@/components/ui_kit/Grid";
+import { FC } from 'react';
+import styles from './MainPage.module.scss';
+import type IArtist from '@/types/Artist.ts';
+import Card from '@/components/ui_kit/Card';
+import Grid from '@/components/ui_kit/Grid';
 
 interface IMainPageProps {
   artists: IArtist[];
@@ -21,7 +21,7 @@ const MainPage: FC<IMainPageProps> = ({ artists }) => {
             key={artist._id}
             name={artist.name}
             details={artist.yearsOfLife}
-            imageSrc={artist.mainPainting?.image?.src ?? ""}
+            imageSrc={artist.mainPainting?.image?.src ?? ''}
             type="painting"
           />
         ))}

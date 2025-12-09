@@ -1,8 +1,8 @@
-import { FC } from "react";
-import styles from "./Footer.module.scss";
-import FacebookIcon from "@/components/icons/FacebookIcon";
-import InstagrammIcon from "@/components/icons/InstagrammIcon";
-import VkIcon from "@/components/icons/VkIcon";
+import { FC } from 'react';
+import styles from './Footer.module.scss';
+import FacebookIcon from '@/components/icons/FacebookIcon';
+import InstagrammIcon from '@/components/icons/InstagrammIcon';
+import VkIcon from '@/components/icons/VkIcon';
 
 const Footer: FC = () => (
   <footer className={styles.footer}>
@@ -11,7 +11,7 @@ const Footer: FC = () => (
       <div className={styles.footerContent}>
         <p className={styles.footerText}>
           Проект реализован в рамках стажировки <br />
-          для Frontend-разработчиков от компании{" "}
+          для Frontend-разработчиков от компании{' '}
           <a href="https://framework.team/" className={styles.frameworkTeam}>
             Framework Team
           </a>

@@ -1,8 +1,8 @@
-import { FC, useId } from "react";
+import { FC, useId } from 'react';
 
-import styles from "./Input.module.scss";
+import styles from './Input.module.scss';
 
-import ErrorIcon from "@/components/icons/ErrorIcon";
+import ErrorIcon from '@/components/icons/ErrorIcon';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;

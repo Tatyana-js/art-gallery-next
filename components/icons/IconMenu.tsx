@@ -1,11 +1,5 @@
 const IconMenu = () => (
-  <svg
-    width="24"
-    height="18"
-    viewBox="0 0 24 18"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
       clipRule="evenodd"

@@ -1,11 +1,5 @@
 const FilterIcon = () => (
-  <svg
-    width="16"
-    height="13"
-    viewBox="0 0 16 13"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M14.2 0C13.3 0 12.7 0.5 12.5 1.2H0.6C0.2 1.2 0 1.4 0 1.8C0 2.2 0.2 2.4 0.6 2.4H12.4C12.6 3.1 13.4 3.6 14.1 3.6C15.1 3.6 15.9 2.8 15.9 1.8C16 0.8 15.1 0 14.2 0ZM14.2 2.4C13.8 2.4 13.6 2.2 13.6 1.8C13.6 1.4 13.8 1.2 14.2 1.2C14.6 1.2 14.8 1.4 14.8 1.8C14.8 2.2 14.5 2.4 14.2 2.4Z"
       fill="currentColor"

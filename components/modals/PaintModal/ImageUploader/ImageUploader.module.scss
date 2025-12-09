@@ -1,0 +1,110 @@
+@use '@/styles/variables.scss' as *;
+@use '@/styles/mixins.scss' as *;
+
+.dropContainer {
+  width: 280px;
+  height: 187px;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  margin-top: 10px;
+  img {
+    aspect-ratio: 1.507;
+  }
+}
+.deleteButton {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+}
+.cardForImg {
+  width: 100%;
+  height: 187px;
+  border: 1px dashed $primary-dark-gray;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  &--light {
+    background-color: $secondary-white;
+  }
+  &--dark {
+    background-color: $primary-black;
+  }
+}
+.previewImage {
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: transparent;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+.textContainer {
+  width: 227px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  button {
+    @include fonts('Inter', sans-serif, 500, 16px, 140%);
+  }
+  color: $primary-dark-gray;
+  text-align: center;
+  @include fonts('Inter', sans-serif, 300, 12px, 140%);
+  &--ligth {
+    color: $secondary-gray;
+  }
+  &--dark {
+    color: $primary-dark-gray;
+  }
+}
+.dropMessage {
+  display: none;
+}
+.uploudMessage {
+  @include fonts('Inter', sans-serif, 300, 12px, 140%);
+  &--light {
+    color: $secondary-gray;
+  }
+  &--dark {
+    color: $primary-dark-gray;
+  }
+}
+@include screen(tablet) {
+  .dropContainer {
+    width: 493px;
+    height: 327px;
+  }
+  .cardForImg {
+    height: 327px;
+  }
+  .previewImage {
+    width: 130px;
+    height: 130px;
+  }
+  .textContainer {
+    width: 260px;
+    gap: 0;
+  }
+  .dropMessage {
+    display: block;
+    @include fonts('Inter', sans-serif, 300, 16px, 140%);
+  }
+  .uploudMessage {
+    margin-top: 12px;
+  }
+  .textButton {
+    display: none;
+    margin-bottom: 12px;
+  }
+}

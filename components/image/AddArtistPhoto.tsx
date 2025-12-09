@@ -1,11 +1,5 @@
 const AddArtistPhoto = () => (
-  <svg
-    width="60"
-    height="60"
-    viewBox="0 0 60 60"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g opacity="0.1">
       <path
         d="M30 0C21.3771 0 14.3284 6.84738 14.3284 15.2239C14.3284 23.6004 21.3771 30.4478 30 30.4478C38.6229 30.4478 45.6716 23.6004 45.6716 15.2239C45.6716 6.84738 38.6229 0 30 0Z"

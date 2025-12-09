@@ -1,11 +1,5 @@
 const SettingIcon = () => (
-  <svg
-    width="28"
-    height="28"
-    viewBox="0 0 28 28"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect opacity="0.1" width="28" height="28" rx="4" fill="#1A1818" />
     <g clipPath="url(#clip0_25346_6061)">
       <path

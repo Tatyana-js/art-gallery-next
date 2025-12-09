@@ -1,0 +1,27 @@
+@use '@/styles/variables.scss' as *;
+@use '@/styles/mixins.scss' as *;
+
+.containerInfo {
+  width: 100%;
+  height: 100%;
+  padding: 80px 30px;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  &--ligth {
+    background-color: $primary-white;
+  }
+  &--dark {
+    background-color: $primary-black;
+  }
+}
+@include screen(tablet_lg) {
+  .containerInfo {
+    grid-template-columns: 2fr 3fr;
+    align-items: start;
+    position: relative;
+  }
+}

@@ -1,0 +1,62 @@
+@use '@/styles/variables.scss' as *;
+@use '@/styles/mixins.scss' as *;
+
+.container {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 25px;
+}
+.deleteQuestion {
+  text-align: center;
+  max-width: 100%;
+  width: 100%;
+  @include fonts('Inter', sans-serif, 500, 16px, 140%);
+  &--light {
+    color: $primary-dark-gray;
+  }
+  &--dark {
+    color: $primary-light-gray;
+  }
+}
+.textWarning {
+  padding: 0 10px;
+  text-align: center;
+  @include fonts('Inter', sans-serif, 300, 12px, 140%);
+  color: $secondary-gray;
+}
+.deleteButton {
+  display: none;
+}
+@include screen(tablet) {
+  .deleteButton {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 12px;
+    svg {
+      background-color: transparent;
+    }
+  }
+  .textWarning {
+    padding-bottom: 12px;
+  }
+}
+@include screen(tablet_lg) {
+  .deleteButton {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 12px;
+  }
+  .textWarning {
+    padding-bottom: 12px;
+  }
+}

@@ -22,11 +22,11 @@
 }
 
 .footerText {
-  @include fonts("Inter", sans-serif, 300, 12px, 140%);
+  @include fonts('Inter', sans-serif, 300, 12px, 140%);
 }
 
 .frameworkTeam {
-  @include fonts("Inter", sans-serif, 500, 12px, 140%);
+  @include fonts('Inter', sans-serif, 500, 12px, 140%);
   text-decoration: underline;
   text-underline-offset: 2px;
   color: currentColor;
@@ -34,7 +34,7 @@
 
 .name {
   margin-top: 9px;
-  @include fonts("Inter", sans-serif, 300, 12px, 140%);
+  @include fonts('Inter', sans-serif, 300, 12px, 140%);
   color: var(--secondary-gray);
 }
 
@@ -72,16 +72,16 @@
   }
 
   .footerText {
-    @include fonts("Inter", sans-serif, 300, 16px, 140%);
+    @include fonts('Inter', sans-serif, 300, 16px, 140%);
   }
 
   .frameworkTeam {
-    @include fonts("Inter", sans-serif, 500, 16px, 140%);
+    @include fonts('Inter', sans-serif, 500, 16px, 140%);
   }
 
   .name {
     margin-top: 12px;
-    @include fonts("Inter", sans-serif, 300, 16px, 140%);
+    @include fonts('Inter', sans-serif, 300, 16px, 140%);
   }
 }
 
@@ -99,15 +99,15 @@
   }
 
   .footerText {
-    @include fonts("Inter", sans-serif, 300, 16px, 140%);
+    @include fonts('Inter', sans-serif, 300, 16px, 140%);
   }
 
   .frameworkTeam {
-    @include fonts("Inter", sans-serif, 500, 16px, 140%);
+    @include fonts('Inter', sans-serif, 500, 16px, 140%);
   }
 
   .name {
     margin-top: 40px;
-    @include fonts("Inter", sans-serif, 300, 16px, 140%);
+    @include fonts('Inter', sans-serif, 300, 16px, 140%);
   }
 }

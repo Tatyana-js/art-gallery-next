@@ -35,7 +35,7 @@
 .linkboxOverlay {
   position: static;
   &::before {
-    content: "";
+    content: '';
     cursor: inherit;
     display: block;
     position: absolute;
@@ -52,7 +52,7 @@
   border: none;
   padding: 8px 12px;
   padding-right: 36px;
-  @include fonts("Cormorant SC", sans-serif, 500, 12px, 100%);
+  @include fonts('Cormorant SC', sans-serif, 500, 12px, 100%);
   background-color: var(--background-color);
   color: var(--text-color);
 }
@@ -80,7 +80,7 @@
 }
 .details {
   margin-top: 4px;
-  @include fonts("Inter", sans-serif, 700, 8px, 100%);
+  @include fonts('Inter', sans-serif, 700, 8px, 100%);
   color: var(--accent-color);
 }
 .containerArtist {
@@ -93,12 +93,12 @@
   }
   .name {
     order: 2;
-    @include fonts("Cormorant SC", sans-serif, 600, 32px, 100%);
+    @include fonts('Cormorant SC', sans-serif, 600, 32px, 100%);
     color: var(--accent-color);
   }
   .details {
     order: 1;
-    @include fonts("Cormorant SC", sans-serif, 500, 12px, 100%);
+    @include fonts('Cormorant SC', sans-serif, 500, 12px, 100%);
     color: var(--button-icon);
   }
 }
@@ -116,13 +116,13 @@
 }
 .emptyMessage {
   color: var(--primary-dark-gray);
-  @include fonts("Inter", sans-serif, 900, 20px, 100%);
+  @include fonts('Inter', sans-serif, 900, 20px, 100%);
 }
 @include screen(tablet) {
   .container {
     width: 90%;
     padding: 12px;
-    @include fonts("Cormorant SC", sans-serif, 500, 16px, 100%);
+    @include fonts('Cormorant SC', sans-serif, 500, 16px, 100%);
     .name {
       word-wrap: break-word;
       padding-right: 20px;
@@ -147,7 +147,7 @@
   }
   .details {
     margin-top: 8px;
-    @include fonts("Inter", sans-serif, 700, 12px, 100%);
+    @include fonts('Inter', sans-serif, 700, 12px, 100%);
   }
 }
 
@@ -164,7 +164,7 @@
   .container {
     width: 85%;
     padding: 20px;
-    @include fonts("Cormorant SC", sans-serif, 500, 16px, 100%);
+    @include fonts('Cormorant SC', sans-serif, 500, 16px, 100%);
   }
   .containerArtist {
     display: none;

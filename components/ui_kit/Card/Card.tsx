@@ -1,16 +1,16 @@
-import clsx from "clsx";
-import { FC } from "react";
-import Image from "next/image";
-import styles from "./Card.module.scss";
-import getImageSrc from "@/lib/utils/getImageSrc";
-import ComeIn from "@/components/icons/ComeIn";
-import EmptyImage from "@/components/image/EmptyImage";
+import clsx from 'clsx';
+import { FC } from 'react';
+import Image from 'next/image';
+import styles from './Card.module.scss';
+import getImageSrc from '@/lib/utils/getImageSrc';
+import ComeIn from '@/components/icons/ComeIn';
+import EmptyImage from '@/components/image/EmptyImage';
 
 export interface ICardProps {
   name?: string;
   imageSrc: string;
   details: string;
-  type: "painting" | "artist";
+  type: 'painting' | 'artist';
   onClick?: () => void;
 }
 
@@ -20,16 +20,9 @@ const Card: FC<ICardProps> = ({ name, imageSrc, details, type, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className={clsx(
-        styles.painting,
-        type === "artist" && styles.paintingArtist,
-      )}
+      className={clsx(styles.painting, type === 'artist' && styles.paintingArtist)}
     >
-      <a
-        href="#"
-        className={styles.linkboxOverlay}
-        title="Link to ArtistPage"
-      ></a>
+      <a href="#" className={styles.linkboxOverlay} title="Link to ArtistPage"></a>
       {isEmpty ? (
         <div className={styles.emptyContainer}>
           <EmptyImage />
@@ -38,17 +31,12 @@ const Card: FC<ICardProps> = ({ name, imageSrc, details, type, onClick }) => {
       ) : (
         <Image
           src={getImageSrc(imageSrc)}
-          alt={name || "Avatar"}
+          alt={name || 'Avatar'}
           className={styles.cardImage}
           fill
         />
       )}
-      <div
-        className={clsx(
-          styles.container,
-          type === "artist" && styles.containerArtist,
-        )}
-      >
+      <div className={clsx(styles.container, type === 'artist' && styles.containerArtist)}>
         <div className={styles.line}>
           <ComeIn />
         </div>

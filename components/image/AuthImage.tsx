@@ -10,12 +10,7 @@ const AuthImage = () => (
     <rect width="498" height="700" fill="url(#pattern0_2734_7372)" />
     <rect width="498" height="700" fill="black" fillOpacity="0.2" />
     <defs>
-      <pattern
-        id="pattern0_2734_7372"
-        patternContentUnits="objectBoundingBox"
-        width="1"
-        height="1"
-      >
+      <pattern id="pattern0_2734_7372" patternContentUnits="objectBoundingBox" width="1" height="1">
         <use
           xlinkHref="#image0_2734_7372"
           transform="matrix(0.00138097 0 0 0.000972568 -0.233457 -0.078668)"

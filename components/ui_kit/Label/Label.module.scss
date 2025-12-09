@@ -13,7 +13,7 @@
   border: var(--label-border);
 }
 .labelText {
-  @include fonts("Inter", sans-serif, 500, 12px, 140%);
+  @include fonts('Inter', sans-serif, 500, 12px, 140%);
 }
 .buttonClose {
   width: 12px;

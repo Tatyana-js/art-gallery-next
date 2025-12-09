@@ -1,18 +1,22 @@
-"use client";
-import useTheme from "@/hooks/useTheme";
-import { FC } from "react";
-import styles from "./Header.module.scss";
-import Link from "next/link";
-import IconLogo from "@/components/icons/IconLogo";
-import SunIcon from "@/components/icons/SunIcon";
-import MoonIcon from "@/components/icons/MoonIcon";
-import Search from "@/components/ui_kit/Search";
-import SearchIcon from "@/components/icons/SearchIcon";
-import IconMenu from "@/components/icons/IconMenu";
+'use client';
+import useTheme from '@/hooks/useTheme';
+import { FC } from 'react';
+import styles from './Header.module.scss';
+import Link from 'next/link';
+import IconLogo from '@/components/icons/IconLogo';
+import SunIcon from '@/components/icons/SunIcon';
+import MoonIcon from '@/components/icons/MoonIcon';
+import Search from '@/components/ui_kit/Search';
+import SearchIcon from '@/components/icons/SearchIcon';
+import IconMenu from '@/components/icons/IconMenu';
+import { useModalStore } from '@/lib/modalStore/modalStore';
+import { useAuthStore } from '@/lib/authStore/authStore';
 
 const Header: FC = ({}) => {
   const { theme, toggleTheme } = useTheme();
-  const isAuth = false;
+  const { openModal } = useModalStore();
+
+ const { isAuthenticated } = useAuthStore();
   const isSearch = false;
 
   return (
@@ -22,7 +26,7 @@ const Header: FC = ({}) => {
           <IconLogo />
         </Link>
         <div className={styles.containerButtons}>
-          {isAuth ? (
+          {isAuthenticated ? (
             <button
               type="button"
               className={styles.buttonItem}
@@ -32,7 +36,7 @@ const Header: FC = ({}) => {
             </button>
           ) : (
             <div className={styles.buttonContainer}>
-              <Link href="/" className={styles.buttonItem}>
+              <Link href='/auth/login' className={styles.buttonItem}>
                 LOG IN
               </Link>
               <Link href="/" className={styles.buttonItem}>
@@ -41,18 +45,13 @@ const Header: FC = ({}) => {
             </div>
           )}
           <div className={styles.themeContainer} onClick={toggleTheme}>
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+            {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
           </div>
         </div>
         <div className={styles.buttons}>
           {isSearch ? (
             <div className={styles.search}>
-              <Search
-                error={false}
-                value={""}
-                onChange={() => {}}
-                closeSearch={() => {}}
-              />
+              <Search error={false} value={''} onChange={() => {}} closeSearch={() => {}} />
             </div>
           ) : (
             <button
@@ -68,7 +67,7 @@ const Header: FC = ({}) => {
             type="button"
             aria-label="menuButton"
             className={styles.containerMenu}
-            // onClick={() => setMenuIsOpen(true)}
+            onClick={() => openModal('menuModal')}
           >
             <IconMenu />
           </button>

@@ -1,5 +1,5 @@
-import { FC } from "react";
-import styles from "./Skeletons.module.scss";
+import { FC } from 'react';
+import styles from './Skeletons.module.scss';
 
 const Skeletons: FC = () => (
   <div className={styles.painting}>

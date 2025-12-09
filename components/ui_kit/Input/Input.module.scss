@@ -6,7 +6,7 @@
 }
 .label {
   display: block;
-  @include fonts("Inter", sans-serif, 700, 12px, 100%);
+  @include fonts('Inter', sans-serif, 700, 12px, 100%);
   margin-bottom: 8px;
   transition: all 0.5s ease;
   color: var(--text-color);
@@ -17,13 +17,13 @@
   border-radius: 4px;
   border: none;
   padding: 7px 16px;
-  @include fonts("Inter", sans-serif, 300, 16px, 140%);
+  @include fonts('Inter', sans-serif, 300, 16px, 140%);
   background-color: var(--input-background);
   border: var(--border_checkbox);
   color: var(--text-color);
   &::placeholder {
     color: var(--secondary-gray);
-    @include fonts("Inter", sans-serif, 300, 16px, 140%);
+    @include fonts('Inter', sans-serif, 300, 16px, 140%);
     transition: opacity 0.2s ease;
   }
   &:hover {
@@ -56,6 +56,6 @@
 }
 .errorMessage {
   color: var(--accept-error);
-  @include fonts("Inter", sans-serif, 300, 12px, 140%);
+  @include fonts('Inter', sans-serif, 300, 12px, 140%);
   margin-left: 32px;
 }
