@@ -7,5 +7,3 @@ export default async function HomePage() {
 
   return <MainPage artists={artists} />;
 }
-
-

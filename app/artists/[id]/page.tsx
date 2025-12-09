@@ -4,7 +4,7 @@ interface PageProps {
 
 export default async function ArtistPage({ params }: PageProps) {
   const { id } = await params;
-  
+
   return (
     <main>
       <h1>Artist Details</h1>
