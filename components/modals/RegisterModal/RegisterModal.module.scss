@@ -12,6 +12,7 @@
 .title {
   @include fonts('Cormorant SC', sans-serif, 600, 32px, 100%);
   color: var(--text-color);
+  text-align: center;
 }
 .formContainer {
   width: 100%;
@@ -67,7 +68,14 @@
     }
   }
   .containerInfo {
-    flex: 1;
-    padding: 130px 85px;
+    width: 436px;
+    margin: 132px 47px;
+    height: 436px;
+    padding: 0;
+  }
+  .title {
+    @include fonts('Cormorant SC', sans-serif, 500, 48px, 100%);
+    text-align: start;
+    white-space: nowrap;
   }
 }

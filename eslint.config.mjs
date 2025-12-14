@@ -5,24 +5,12 @@ import nextTs from 'eslint-config-next/typescript';
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
- {
-    plugins: {
-      'react-hooks': reactHooks,
-    },
-    rules: {
-      // Правила хуков
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      // Отключаем слишком строгое правило
-      'react-hooks/set-state-in-effect': 'off',
-    },
-  },
   globalIgnores([
     // Default ignores of eslint-config-next:
     '.next/**',
     'out/**',
     'build/**',
-    'next-env.d.ts',
+    'next-env.d.ts'
   ]),
 ]);
 

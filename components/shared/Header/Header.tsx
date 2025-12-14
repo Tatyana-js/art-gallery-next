@@ -10,13 +10,14 @@ import Search from '@/components/ui_kit/Search';
 import SearchIcon from '@/components/icons/SearchIcon';
 import IconMenu from '@/components/icons/IconMenu';
 import { useModalStore } from '@/lib/modalStore/modalStore';
-import { useAuthStore } from '@/lib/authStore/authStore';
+import { logoutAction } from '@/app/actions/auth-actions';
 
-const Header: FC = ({}) => {
+interface IHeaderProps {
+  isAuth: boolean;
+}
+const Header: FC<IHeaderProps> = ({ isAuth }) => {
   const { theme, toggleTheme } = useTheme();
   const { openModal } = useModalStore();
-
- const { isAuthenticated } = useAuthStore();
   const isSearch = false;
 
   return (
@@ -26,22 +27,30 @@ const Header: FC = ({}) => {
           <IconLogo />
         </Link>
         <div className={styles.containerButtons}>
-          {isAuthenticated ? (
+          {isAuth ? (
             <button
               type="button"
               className={styles.buttonItem}
-              // onClick={handleClick}
+              onClick={async () => await logoutAction()}
             >
               LOG OUT
             </button>
           ) : (
             <div className={styles.buttonContainer}>
-              <Link href='/auth/login' className={styles.buttonItem}>
+              <button
+                type="button"
+                onClick={() => openModal('authorization')}
+                className={styles.buttonItem}
+              >
                 LOG IN
-              </Link>
-              <Link href="/" className={styles.buttonItem}>
+              </button>
+              <button
+                type="button"
+                onClick={() => openModal('registration')}
+                className={styles.buttonItem}
+              >
                 SIGN UP
-              </Link>
+              </button>
             </div>
           )}
           <div className={styles.themeContainer} onClick={toggleTheme}>

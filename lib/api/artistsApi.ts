@@ -1,40 +1,49 @@
-import { ArtistsQueryParams } from '@/types/types';
+// app/actions/getArtists.ts
 import { cache } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-// Получение всех артистов (статичная версия)
-export const getArtists = cache(async (params?: ArtistsQueryParams) => {
-  const searchParams = new URLSearchParams();
-
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined) {
-        if (Array.isArray(value)) {
-          value.forEach((item) => {
-            searchParams.append(key, item.toString());
-          });
-        } else {
-          searchParams.append(key, value.toString());
+export const getArtists = cache(async () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  
+  // Получаем токен на сервере
+  const { cookies } = await import('next/headers');
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+  const isAuth = !!token;
+  
+  const endpoint = isAuth ? '/artists' : '/artists/static/';
+  const url = `${apiUrl}${endpoint}?limit=50`;
+  
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      },
+      cache: 'no-store'
+    });
+    
+    if (!response.ok) {
+      // Если авторизованный запрос не сработал, пробуем статический
+      if (isAuth) {
+        const staticUrl = `${apiUrl}/artists/static/?limit=50`;
+        const staticResponse = await fetch(staticUrl, {
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store'
+        });
+        
+        if (staticResponse.ok) {
+          const data = await staticResponse.json();
+          return Array.isArray(data) ? data : data.data || data.artists || [];
         }
       }
-    });
+      return [];
+    }
+    
+    const data = await response.json();
+    return Array.isArray(data) ? data : data.data || data.artists || [];
+    
+  } catch (error) {
+    console.error('Error:', error);
+    return [];
   }
-
-  const queryString = searchParams.toString();
-  const url = `${API_URL}/artists/static/${queryString ? `?${queryString}` : ''}`;
-
-  const response = await fetch(url, {
-    // Настраиваем кэширование Next.js
-    next: {
-      tags: ['artists'], // Для инвалидации
-      revalidate: 3600, // Кэш на 1 час (как keepUnusedDataFor)
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch artists');
-  }
-
-  return response.json();
 });

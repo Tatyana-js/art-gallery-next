@@ -1,46 +1,45 @@
 'use client';
 
-// import { useToast } from '@/hooks/useToast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import styles from './AuthModal.module.scss';
 import type { AuthFormData } from '@/types/types';
 import Button from '@/components/ui_kit/Buttons';
 import Input from '@/components/ui_kit/Input';
 import AuthImage from '@/components/image/AuthImage';
 import userSchema from './validate';
-import Link from 'next/link';
 import { useModalStore } from '@/lib/modalStore/modalStore';
-import { useAuthStore } from '@/lib/authStore/authStore';
+import { useToast } from '@/hooks/useToast';
+import { loginAction } from '@/app/actions/auth-actions';
 
 interface UseFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 const AuthModal: FC = () => {
   const { closeModal, openModal } = useModalStore();
-  const { login } = useAuthStore();
-  // const { showError } = useToast();
+  const { showError } = useToast();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    watch,
+    control,
     reset,
   } = useForm<UseFormData>({
     resolver: yupResolver(userSchema),
     mode: 'onSubmit',
   });
 
-  const { email, password } = watch();
-  const isAllUserData = !!(email && password);
+  const username = useWatch({ control, name: 'username' });
+  const password = useWatch({ control, name: 'password' });
+  const isAllUserData = !!(username && password);
 
   const onSubmit = async (formData: AuthFormData) => {
     try {
-      await login(formData.email, formData.password);
+      await loginAction(formData.username, formData.password);
 
       reset();
       closeModal();
@@ -52,19 +51,19 @@ const AuthModal: FC = () => {
           error?: string;
         };
 
-        //   if (errorData.statusCode === 409) {
-        //     showError('Неверный email или пароль');
-        //   } else if (errorData.statusCode === 404) {
-        //     showError('Пользователь с таким email не существует');
-        //   } else {
-        //     showError(errorData.message || 'Ошибка авторизации');
-        //   }
-        // } else {
-        //   showError('Ошибка авторизации');
-        // }
+        if (errorData.statusCode === 409) {
+          showError('Неверный email или пароль');
+        } else if (errorData.statusCode === 404) {
+          showError('Пользователь с таким email не существует');
+        } else {
+          showError(errorData.message || 'Ошибка авторизации');
+        }
+      } else {
+        showError('Ошибка авторизации');
       }
     }
   };
+
   return (
     <>
       <div className={styles.authImage}>
@@ -73,7 +72,12 @@ const AuthModal: FC = () => {
       <div className={styles.containerInfo}>
         <h3 className={styles.title}>Welcome back</h3>
         <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
-          <Input label="Email" type="email" {...register('email')} error={errors.email?.message} />
+          <Input
+            label="Email"
+            type="email"
+            {...register('username')}
+            error={errors.username?.message}
+          />
           <Input
             label="Password"
             type="password"
@@ -87,10 +91,10 @@ const AuthModal: FC = () => {
           </div>
         </form>
         <p className={styles.signUpMessage}>
-          If you don't have an account yet, please{' '}
+          {`If you don't have an account yet, please `}
           <button
             type="button"
-            onClick={() => openModal('registeration')}
+            onClick={() => openModal('registration')}
             className={styles.signUpButtons}
           >
             sign up

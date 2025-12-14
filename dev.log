@@ -1,0 +1,178 @@
+
+> fwt-art-gallery-next@0.1.0 dev
+> next dev
+
+   ▲ Next.js 16.0.6 (Turbopack)
+   - Local:         http://localhost:3000
+   - Network:       http://192.168.0.169:3000
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1563ms
+ ○ Compiling / ...
+[BABEL] Note: The code generator has deoptimised the styling of /Users/tatanaandreeva/Desktop/Gallery/next/art-gallery-next/components/image/AuthImage.tsx as it exceeds the max of 500KB.
+[BABEL] Note: The code generator has deoptimised the styling of /Users/tatanaandreeva/Desktop/Gallery/next/art-gallery-next/components/image/RegisterImage.tsx as it exceeds the max of 500KB.
+ GET / 200 in 20.9s (compile: 16.4s, render: 4.5s)
+ ✓ Compiled in 1100ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 633ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 12ms
+ GET / 200 in 3.9s (compile: 1251ms, render: 2.7s)
+ ✓ Compiled in 174ms
+ ✓ Compiled in 284ms
+ GET / 200 in 310ms (compile: 201ms, render: 110ms)
+ ✓ Compiled in 199ms
+ ✓ Compiled in 522ms
+ ✓ Compiled in 167ms
+ ✓ Compiled in 109ms
+ ✓ Compiled in 446ms
+ ✓ Compiled in 138ms
+ ✓ Compiled in 171ms
+ ✓ Compiled in 673ms
+ ✓ Compiled in 168ms
+ ✓ Compiled in 112ms
+ ✓ Compiled in 212ms
+ ✓ Compiled in 403ms
+ GET / 200 in 2.5s (compile: 534ms, render: 2.0s)
+ ✓ Compiled in 369ms
+ ✓ Compiled in 637ms
+ ✓ Compiled in 81ms
+ ✓ Compiled in 637ms
+ GET / 200 in 442ms (compile: 285ms, render: 157ms)
+ ✓ Compiled in 41ms
+ ✓ Compiled in 502ms
+ GET / 200 in 280ms (compile: 179ms, render: 101ms)
+ ✓ Compiled in 160ms
+ ✓ Compiled in 66ms
+ ✓ Compiled in 27ms
+ GET / 200 in 558ms (compile: 167ms, render: 391ms)
+ ✓ Compiled in 210ms
+ ✓ Compiled in 125ms
+ ✓ Compiled in 27ms
+ ✓ Compiled in 32ms
+ ✓ Compiled in 37ms
+ GET / 200 in 815ms (compile: 515ms, render: 300ms)
+ ✓ Compiled in 556ms
+ ✓ Compiled in 60ms
+ ✓ Compiled in 76ms
+ GET / 200 in 3.1s (compile: 581ms, render: 2.5s)
+ ✓ Compiled in 173ms
+ GET / 200 in 282ms (compile: 157ms, render: 125ms)
+ ✓ Compiled in 715ms
+ ✓ Compiled in 30ms
+ GET / 200 in 2.7s (compile: 500ms, render: 2.2s)
+ ✓ Compiled in 167ms
+ ✓ Compiled in 31ms
+ ✓ Compiled in 34ms
+ GET / 200 in 551ms (compile: 343ms, render: 208ms)
+ ✓ Compiled in 52ms
+ ✓ Compiled in 35ms
+ ✓ Compiled in 91ms
+ ✓ Compiled in 39ms
+ GET / 200 in 646ms (compile: 377ms, render: 269ms)
+ ✓ Compiled in 350ms
+ ✓ Compiled in 3.8s
+ GET / 200 in 704ms (compile: 262ms, render: 441ms)
+ ✓ Compiled in 1062ms
+ ✓ Compiled in 152ms
+ ✓ Compiled in 85ms
+ ✓ Compiled in 175ms
+ ✓ Compiled in 54ms
+ ✓ Compiled in 325ms
+ ✓ Compiled in 1329ms
+ GET / 200 in 503ms (compile: 117ms, render: 386ms)
+ ✓ Compiled in 248ms
+ ✓ Compiled in 1533ms
+ GET / 200 in 346ms (compile: 13ms, render: 333ms)
+ ✓ Compiled in 322ms
+ ✓ Compiled in 115ms
+ GET / 200 in 132ms (compile: 25ms, render: 108ms)
+ ✓ Compiled in 207ms
+ ✓ Compiled in 224ms
+ ✓ Compiled in 2.3s
+ GET / 200 in 252ms (compile: 16ms, render: 236ms)
+ ✓ Compiled in 174ms
+ ✓ Compiled in 945ms
+ ✓ Compiled in 371ms
+ ✓ Compiled in 385ms
+ ✓ Compiled in 2.4s
+ GET / 200 in 227ms (compile: 26ms, render: 201ms)
+ ✓ Compiled in 340ms
+ ✓ Compiled in 498ms
+ GET / 200 in 2.6s (compile: 24ms, render: 2.5s)
+ GET / 200 in 1184ms (compile: 37ms, render: 1147ms)
+ ✓ Compiled in 309ms
+ ✓ Compiled in 175ms
+ ✓ Compiled in 465ms
+ ✓ Compiled in 1350ms
+ GET / 200 in 356ms (compile: 49ms, render: 306ms)
+ ✓ Compiled in 817ms
+ ✓ Compiled in 5.4s
+ GET / 200 in 2.9s (compile: 288ms, render: 2.6s)
+ ✓ Compiled in 308ms
+ ✓ Compiled in 263ms
+false
+ GET / 200 in 2.7s (compile: 382ms, render: 2.3s)
+false
+ GET / 200 in 590ms (compile: 23ms, render: 568ms)
+false
+ GET / 200 in 386ms (compile: 20ms, render: 366ms)
+ ✓ Compiled in 580ms
+ ✓ Compiled in 175ms
+ ✓ Compiled in 349ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 202ms
+false
+true
+ ✓ Compiled in 1283ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 4.0s (compile: 362ms, render: 3.6s)
+ ✓ Compiled in 791ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 798ms
+false
+true
+ GET / 200 in 3.5s (compile: 517ms, render: 3.0s)
+ ✓ Compiled in 57ms
+ ✓ Compiled in 25ms
+ ✓ Compiled in 25ms
+ ✓ Compiled in 477ms
+ ✓ Compiled in 32ms
+ GET / 200 in 418ms (compile: 204ms, render: 214ms)
+ ✓ Compiled in 54ms
+ ✓ Compiled in 26ms
+ ✓ Compiled in 19ms
+ ✓ Compiled in 21ms
+ ✓ Compiled in 1194ms
+false
+true
+ GET / 200 in 21.5s (compile: 849ms, render: 20.7s)
+ ✓ Compiled in 9ms
+false
+true
+ ⨯ Error: Failed to fetch artists
+    at <unknown> (lib/api/artistsApi.ts:34:11)
+    at async HomePage (app/page.tsx:6:30)
+  32 |
+  33 |   if (!response.ok) {
+> 34 |     throw new Error('Failed to fetch artists');
+     |           ^
+  35 |   }
+  36 |
+  37 |   return response.json(); {
+  digest: '3875324536'
+}
+ ⨯ Error: Failed to fetch artists
+    at <unknown> (lib/api/artistsApi.ts:34:11)
+    at async HomePage (app/page.tsx:6:30)
+  32 |
+  33 |   if (!response.ok) {
+> 34 |     throw new Error('Failed to fetch artists');
+     |           ^
+  35 |   }
+  36 |
+  37 |   return response.json(); {
+  digest: '3875324536'
+}
+ GET / 500 in 32.1s (compile: 367ms, render: 31.8s)

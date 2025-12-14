@@ -25,7 +25,7 @@ const MenuModal: FC = () => {
       </button>
       <button
         type="button"
-        onClick={() => openModal('registeration')}
+        onClick={() => openModal('registration')}
         className={styles.loginbuttons}
       >
         SIGN UP

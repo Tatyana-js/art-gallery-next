@@ -1,0 +1,76 @@
+.buttonContainer {
+  width: 100%;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 36px;
+  color: var(--input-color);
+}
+.addArtistButton {
+  width: 110px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.buttons {
+  width: 28px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.searchButton {
+  display: none;
+  input {
+    height: 32px;
+  }
+}
+.filterButton {
+  width: 24px;
+  height: 24px;
+  right: 20px;
+  top: 32px;
+  border-radius: 10%;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@include screen(tablet) {
+  .buttonContainer {
+    width: 100%;
+    height: 24px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+  }
+  .searchButton {
+    display: block;
+    width: 100%;
+  }
+  .buttons {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    align-items: center;
+  }
+  .filterButton {
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    color: var(--input-color);
+  }
+}
+@include screen(tablet_lg) {
+  .buttonContainer {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .buttons {
+    grid-column: 3;
+    justify-content: end;
+  }
+}

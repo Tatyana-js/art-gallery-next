@@ -1,34 +1,33 @@
 'use client';
 
-// import { useToast } from '@/hooks/useToast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
 import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import styles from './RegisterModal.module.scss';
 import type { AuthFormData } from '@/types/types';
 import Button from '@/components/ui_kit/Buttons';
 import Input from '@/components/ui_kit/Input';
 import RegisterImage from '@/components/image/RegisterImage';
 import userSchema from './validate';
-import { useAuthStore } from '@/lib/authStore/authStore';
 import { useModalStore } from '@/lib/modalStore/modalStore';
+import { useToast } from '@/hooks/useToast';
+import { registrationAction } from '@/app/actions/auth-actions';
 
 interface UseFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 const RegisterModal: FC = () => {
-  const { registeration } = useAuthStore();
   const { closeModal, openModal } = useModalStore();
-  // const { showError } = useToast();
+  const { showError } = useToast();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    watch,
+    control,
     reset,
   } = useForm<UseFormData>({
     resolver: yupResolver(userSchema),
@@ -36,12 +35,13 @@ const RegisterModal: FC = () => {
     reValidateMode: 'onChange',
   });
 
-  const { email, password } = watch();
-  const isFormReady = !!(email && password);
+ const username = useWatch({ control, name: 'username' });
+  const password = useWatch({ control, name: 'password' });
+  const isFormReady = !!(username && password);
 
   const onSubmit = async (formData: AuthFormData) => {
     try {
-      await registeration(formData.email, formData.password);
+      await registrationAction(formData.username, formData.password);
 
       reset();
       closeModal();
@@ -52,15 +52,13 @@ const RegisterModal: FC = () => {
           message?: string;
           error?: string;
         };
-
-        //   if (errorData.statusCode === 409) {
-        //     showError('Пользователь с таким email уже существует');
-        //   } else {
-        //     showError(errorData.message || 'Ошибка авторизации');
-        //   }
-        // } else {
-        //   showError('Произошла ошибка при регистрации');
-        // }
+        if (errorData.statusCode === 409) {
+          showError('Пользователь с таким email уже существует');
+        } else {
+          showError(errorData.message || 'Ошибка авторизации');
+        }
+      } else {
+        showError('Произошла ошибка при регистрации');
       }
     }
   };
@@ -71,9 +69,14 @@ const RegisterModal: FC = () => {
         <RegisterImage />
       </div>
       <div className={styles.containerInfo}>
-        <h3 className={styles.title}>Create your profile</h3>
+        <h2 className={styles.title}>Create your profile</h2>
         <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Input label="Email" type="email" {...register('email')} error={errors.email?.message} />
+          <Input
+            label="Email"
+            type="email"
+            {...register('username')}
+            error={errors.username?.message}
+          />
           <Input
             label="Password"
             type="password"

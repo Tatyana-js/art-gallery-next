@@ -1,74 +1,87 @@
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { AuthTokens } from '@/types/types';
-import { fingerprint } from '@/lib/utils/fingerprint';
-import { cookieStorage } from '../utils/cookiesStorage';
+import axios from 'axios';
+import { getFingerprint } from '../utils/fingerprint';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// ТОЛЬКО для клиентских компонентов (с интерцепторами)
+export const setupClientApi = () => {
+  const instance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
+  });
 
-export const publicApi = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+  // Интерцептор запросов
+  instance.interceptors.request.use(async (config) => {
+    const token = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('accessToken='))
+      ?.split('=')[1];
 
-export const authApi = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Интерцептор для добавления токена к запросам
-authApi.interceptors.request.use(
-  (config: InternalAxiosRequestConfig<any>) => {
-    const token = cookieStorage.get('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    return config;
-  },
-  (error: any) => {
-    return Promise.reject(error);
-  }
-);
 
-// Интерцептор для обработки 401 ошибки и обновления токена
-authApi.interceptors.response.use(
-  (response: AxiosResponse<any, any, {}>) => response,
-  async (error: { config: any; response: { status: number } }) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        const refreshToken = cookieStorage.get('refreshToken');
-        if (!refreshToken) {
-          throw new Error('No refresh token');
-        }
-
-        const deviceId = await fingerprint();
-        const { data } = await publicApi.post<AuthTokens>('/auth/refresh', {
-          refreshToken,
-          deviceId,
-        });
-
-        cookieStorage.set('accessToken', data.accessToken);
-        cookieStorage.set('refreshToken', data.refreshToken);
-
-        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-        return authApi(originalRequest);
-      } catch (refreshError) {
-        // При ошибке обновления токена делаем логаут
-        cookieStorage.remove('accessToken');
-        cookieStorage.remove('refreshToken');
-
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
-      }
+    if (config.url?.includes('/auth/')) {
+      const fingerprint = await getFingerprint();
+      config.headers['X-Fingerprint'] = fingerprint;
     }
 
-    return Promise.reject(error);
+    return config;
+  });
+
+  // Интерцептор ответов (refresh токен)
+  instance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      if (error.response?.status === 401 && !error.config._retry) {
+        error.config._retry = true;
+
+        try {
+          const refreshToken = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith('refreshToken='))
+            ?.split('=')[1];
+
+          if (!refreshToken) {
+            throw new Error('No refresh token');
+          }
+
+          const refreshResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken }),
+          });
+
+          if (!refreshResponse.ok) {
+            throw new Error('Refresh failed');
+          }
+          const data = await refreshResponse.json();
+
+          document.cookie = `accessToken=${data.accessToken}; path=/`;
+          if (data.refreshToken) {
+            document.cookie = `refreshToken=${data.refreshToken}; path=/`;
+          }
+
+          error.config.headers.Authorization = `Bearer ${data.accessToken}`;
+          return instance(error.config);
+        } catch {
+          document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          window.location.href = '/login';
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  return instance;
+};
+
+// Хук для использования в клиентских компонентах
+export const useApi = () => {
+  if (typeof window === 'undefined') {
+    throw new Error('useApi can only be used in client components');
   }
-);
+  
+  const api = setupClientApi();
+  const isAuth = !!document.cookie.split('; ').find((row) => row.startsWith('accessToken='));
+  
+  return { api, isAuth };
+};

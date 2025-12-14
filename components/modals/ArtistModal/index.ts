@@ -1,1 +1,1 @@
-export { default } from './ArtistModal';
+// export { default } from './ArtistModal';

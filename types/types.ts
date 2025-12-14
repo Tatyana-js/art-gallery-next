@@ -10,14 +10,14 @@ export interface AuthResponse {
 }
 
 export interface AuthFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 export interface ArtistsQueryParams {
+  search?: string;
   genres?: string[];
-  orderBy?: string;
-  direction?: 'asc' | 'desc';
+  sort?: 'a_to_z' | 'z_to_a' | null;
   name?: string;
 }
 
@@ -36,7 +36,7 @@ export interface IFilterModalState {
 export type ModalVariant =
   | 'menuModal'
   | 'authorization'
-  | 'registeration'
+  | 'registration'
   | 'addArtist'
   | 'deleteArtist'
   | 'painting'

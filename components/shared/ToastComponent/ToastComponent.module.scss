@@ -1,0 +1,16 @@
+.toastContainer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: 10000;
+  padding: 8px;
+  display: flex;
+  flex-direction: column-reverse; //toast сверху
+}
+@include screen(tablet) {
+  .toastContainer {
+    width: 60%;
+    bottom: 20px;
+    right: 20px;
+  }
+}

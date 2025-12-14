@@ -1,8 +1,8 @@
 'use client';
 
 import clsx from 'clsx';
-import { FC, useLayoutEffect } from 'react';
-import { useRef, useState } from 'react';
+import { FC, Suspense, useEffect } from 'react';
+import { useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useOnClickOutside } from 'usehooks-ts';
@@ -15,8 +15,8 @@ import AuthModal from '../AuthModal';
 import RegisterModal from '../RegisterModal';
 
 const Modal: FC = () => {
-  const [isActive, setIsActive] = useState(true);
   const { currentModal, closeModal } = useModalStore();
+  const isActive = !!currentModal.variant;
 
   const drawerRef = useRef<HTMLDivElement>(null);
 
@@ -24,47 +24,45 @@ const Modal: FC = () => {
   const background = searchParams.get('background');
   const router = useRouter();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (currentModal.variant) {
-      setIsActive(true);
-    } else {
-      setIsActive(false);
+      document.body.style.overflow = 'hidden';
     }
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [currentModal.variant]);
-
-  // useEffect(() => {
-  //   lock();
-  //   return () => {
-  //     unlock();
-  //   };
-  // }, [lock, unlock]);
 
   useOnClickOutside(drawerRef as React.RefObject<HTMLElement>, () => {
     const activeToasts = document.querySelectorAll('[data-toast]');
-    if (activeToasts.length > 0) {
-      return;
+    if (activeToasts.length > 0) return;
+    closeModal();
+    if (background) {
+      router.replace(background);
     }
-    setIsActive(false);
   });
 
   const handleClose = () => {
-    setIsActive(false);
+    closeModal();
+    if (background) {
+      router.replace(background);
+    }
   };
 
   const handleAnimationEnd = () => {
-    if (isActive) {
-      return;
-    }
-    const isAuthModal =
-      currentModal.variant === 'authorization' || currentModal.variant === 'registeration';
+    if (!isActive) {
+      const isAuthModal =
+        currentModal.variant === 'authorization' || currentModal.variant === 'registration';
 
-    if (isAuthModal && background) {
-      router.replace(background);
-    } else if (isAuthModal) {
-      router.replace('/');
+      if (isAuthModal && background) {
+        router.replace(background);
+      } else if (isAuthModal) {
+        router.replace('/');
+      }
+
+      closeModal();
+      document.body.style.overflow = '';
     }
-    setIsActive(false);
-    closeModal();
   };
 
   if (!currentModal.variant) return null;
@@ -73,7 +71,7 @@ const Modal: FC = () => {
     menuModal: [styles.menuModal, isActive && styles.activeMenuModal].filter(Boolean).join(' '),
     filter: [styles.menuModal, isActive && styles.activeMenuModal].filter(Boolean).join(' '),
     authorization: styles.authModal,
-    registeration: styles.authModal,
+    registration: styles.authModal,
     addArtist: styles.addArtist,
     deleteArtist: styles.deleteArtist,
     painting: styles.paintingModal,
@@ -86,7 +84,7 @@ const Modal: FC = () => {
         return <MenuModal />;
       case 'authorization':
         return <AuthModal />;
-      case 'registeration':
+      case 'registration':
         return <RegisterModal />;
     }
   };
@@ -96,7 +94,6 @@ const Modal: FC = () => {
       <div
         ref={drawerRef}
         className={variantClassMap[currentModal.variant]}
-        // onClick={(e) => e.stopPropagation()}
         onAnimationEnd={handleAnimationEnd}
       >
         <button
@@ -107,7 +104,7 @@ const Modal: FC = () => {
         >
           <ClearIcon />
         </button>
-        {getModalContent()}
+        <Suspense fallback={<div>Loading...</div>}>{getModalContent()}</Suspense>
       </div>
     </div>,
     document.body
