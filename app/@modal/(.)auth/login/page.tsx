@@ -3,7 +3,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FC } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import styles from './AuthModal.module.scss';
+import styles from './login.module.scss';
 import type { AuthFormData } from '@/types/types';
 import Button from '@/components/ui_kit/Buttons';
 import Input from '@/components/ui_kit/Input';
@@ -12,6 +12,9 @@ import userSchema from './validate';
 import { useModalStore } from '@/lib/modalStore/modalStore';
 import { useToast } from '@/hooks/useToast';
 import { loginAction } from '@/app/actions/auth-actions';
+import { useRouter } from 'next/navigation';
+import switchModal from '@/lib/utils/switchModal';
+import { getFingerprint } from '@/lib/utils/fingerprint';
 
 interface UseFormData {
   username: string;
@@ -19,6 +22,7 @@ interface UseFormData {
 }
 
 const AuthModal: FC = () => {
+  const router = useRouter();
   const { closeModal, openModal } = useModalStore();
   const { showError } = useToast();
 
@@ -39,7 +43,13 @@ const AuthModal: FC = () => {
 
   const onSubmit = async (formData: AuthFormData) => {
     try {
-      await loginAction(formData.username, formData.password);
+      const fingerprint = await getFingerprint();
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('fingerprint', fingerprint);
+      }
+
+      await loginAction(formData.username, formData.password, fingerprint);
 
       reset();
       closeModal();
@@ -50,13 +60,10 @@ const AuthModal: FC = () => {
           message?: string;
           error?: string;
         };
-
         if (errorData.statusCode === 409) {
           showError('Неверный email или пароль');
         } else if (errorData.statusCode === 404) {
           showError('Пользователь с таким email не существует');
-        } else {
-          showError(errorData.message || 'Ошибка авторизации');
         }
       } else {
         showError('Ошибка авторизации');
@@ -94,7 +101,14 @@ const AuthModal: FC = () => {
           {`If you don't have an account yet, please `}
           <button
             type="button"
-            onClick={() => openModal('registration')}
+            onClick={() =>
+              switchModal({
+                closeModal,
+                openModal: () => openModal('registration'),
+                type: 'register',
+                router,
+              })
+            }
             className={styles.signUpButtons}
           >
             sign up

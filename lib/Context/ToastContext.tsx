@@ -55,4 +55,3 @@ export const ToastProvider: FC<IToastProviderProps> = ({ children }) => {
   );
 };
 export { ToastComponent };
-

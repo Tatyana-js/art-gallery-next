@@ -11,8 +11,8 @@ import ClearIcon from '@/components/icons/ClearIcon';
 import { ModalVariant } from '@/types/types';
 import { useModalStore } from '@/lib/modalStore/modalStore';
 import MenuModal from '../MenuModal';
-import AuthModal from '../AuthModal';
-import RegisterModal from '../RegisterModal';
+import AuthModal from '@/app/@modal/(.)auth/login/page';
+import RegisterModal from '@/app/@modal/(.)auth/register/page';
 
 const Modal: FC = () => {
   const { currentModal, closeModal } = useModalStore();
@@ -37,17 +37,11 @@ const Modal: FC = () => {
     const activeToasts = document.querySelectorAll('[data-toast]');
     if (activeToasts.length > 0) return;
     closeModal();
+    router.back();
     if (background) {
       router.replace(background);
     }
   });
-
-  const handleClose = () => {
-    closeModal();
-    if (background) {
-      router.replace(background);
-    }
-  };
 
   const handleAnimationEnd = () => {
     if (!isActive) {
@@ -100,7 +94,14 @@ const Modal: FC = () => {
           type="button"
           aria-label="Close modal"
           className={styles.clearButton}
-          onClick={handleClose}
+          onClick={() => {
+            const isAuthModal =
+              currentModal.variant === 'authorization' || currentModal.variant === 'registration';
+            closeModal();
+            if (isAuthModal) {
+              router.back();
+            }
+          }}
         >
           <ClearIcon />
         </button>

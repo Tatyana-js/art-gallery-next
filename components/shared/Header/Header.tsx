@@ -1,6 +1,6 @@
 'use client';
 import useTheme from '@/hooks/useTheme';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import styles from './Header.module.scss';
 import Link from 'next/link';
 import IconLogo from '@/components/icons/IconLogo';
@@ -11,14 +11,32 @@ import SearchIcon from '@/components/icons/SearchIcon';
 import IconMenu from '@/components/icons/IconMenu';
 import { useModalStore } from '@/lib/modalStore/modalStore';
 import { logoutAction } from '@/app/actions/auth-actions';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface IHeaderProps {
   isAuth: boolean;
 }
 const Header: FC<IHeaderProps> = ({ isAuth }) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const { openModal } = useModalStore();
   const isSearch = false;
+
+  useEffect(() => {
+    if (pathname === '/auth/login') {
+      openModal('authorization');
+    } else if (pathname === '/auth/register') {
+      openModal('registration');
+    }
+  }, [openModal, pathname]);
+
+  const handleAuthClick = (type: 'login' | 'register') => {
+    openModal(type === 'login' ? 'authorization' : 'registration');
+
+    router.push(`/auth/${type}`);
+  };
 
   return (
     <header className={styles.header}>
@@ -39,14 +57,14 @@ const Header: FC<IHeaderProps> = ({ isAuth }) => {
             <div className={styles.buttonContainer}>
               <button
                 type="button"
-                onClick={() => openModal('authorization')}
+                onClick={() => handleAuthClick('login')}
                 className={styles.buttonItem}
               >
                 LOG IN
               </button>
               <button
                 type="button"
-                onClick={() => openModal('registration')}
+                onClick={() => handleAuthClick('register')}
                 className={styles.buttonItem}
               >
                 SIGN UP

@@ -6,8 +6,7 @@ import Card from '@/components/ui_kit/Card';
 import Grid from '@/components/ui_kit/Grid';
 import AuthSection from '../AuthSection';
 import { useModalStore } from '@/lib/modalStore/modalStore';
-import router from 'next/router';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { IGenre } from '@/types/Artist';
 
 interface IMainPageProps {
@@ -20,16 +19,17 @@ interface IMainPageProps {
 
 const MainPage: FC<IMainPageProps> = ({ artists, genres, sort, isAuth }) => {
   const [value, setValue] = useState('');
-  
+
   const searchParams = useSearchParams();
+  const router = useRouter();
   const visibleCount = 6;
 
   const { openModal } = useModalStore();
-  const visibleArtists = artists.slice(0, visibleCount);
+  const visibleArtists = artists?.slice(0, visibleCount) || [];
 
   const handleSearchChange = (value: string) => {
     setValue(value);
-    
+
     const params = new URLSearchParams(searchParams.toString());
     params.set('search', value);
     router.push(`?${params.toString()}`);
@@ -58,7 +58,7 @@ const MainPage: FC<IMainPageProps> = ({ artists, genres, sort, isAuth }) => {
         {visibleArtists.length === 0 && (
           <div className={styles.messageContainer}>
             <p className={styles.noResults}>
-              No matches for <span className={styles.searchValue}>{}</span>
+              No matches for <span className={styles.searchValue}>{value}</span>
             </p>
             <p className={styles.message}>
               Please try again with a different spelling or keywords.

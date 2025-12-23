@@ -1,13 +1,11 @@
 import axios from 'axios';
 import { getFingerprint } from '../utils/fingerprint';
 
-// ТОЛЬКО для клиентских компонентов (с интерцепторами)
 export const setupClientApi = () => {
   const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
   });
 
-  // Интерцептор запросов
   instance.interceptors.request.use(async (config) => {
     const token = document.cookie
       .split('; ')
@@ -26,7 +24,6 @@ export const setupClientApi = () => {
     return config;
   });
 
-  // Интерцептор ответов (refresh токен)
   instance.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -72,16 +69,4 @@ export const setupClientApi = () => {
   );
 
   return instance;
-};
-
-// Хук для использования в клиентских компонентах
-export const useApi = () => {
-  if (typeof window === 'undefined') {
-    throw new Error('useApi can only be used in client components');
-  }
-  
-  const api = setupClientApi();
-  const isAuth = !!document.cookie.split('; ').find((row) => row.startsWith('accessToken='));
-  
-  return { api, isAuth };
 };

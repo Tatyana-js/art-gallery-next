@@ -5,9 +5,11 @@ import SunIcon from '@/components/icons/SunIcon';
 import MoonIcon from '@/components/icons/MoonIcon';
 import Button from '@/components/ui_kit/Buttons';
 import { useModalStore } from '@/lib/modalStore/modalStore';
+import { useRouter } from 'next/navigation';
 
 const MenuModal: FC = () => {
   const { theme, toggleTheme } = useTheme();
+  const router = useRouter();
   const { openModal } = useModalStore();
 
   return (
@@ -18,7 +20,10 @@ const MenuModal: FC = () => {
       </div>
       <button
         type="button"
-        onClick={() => openModal('authorization')}
+        onClick={() => {
+          router.replace(`/auth/login`, { scroll: false });
+          openModal('authorization');
+        }}
         className={styles.loginbuttons}
       >
         LOG IN

@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
 import { FC } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import styles from './RegisterModal.module.scss';
+import styles from './register.module.scss';
 import type { AuthFormData } from '@/types/types';
 import Button from '@/components/ui_kit/Buttons';
 import Input from '@/components/ui_kit/Input';
@@ -13,6 +13,9 @@ import userSchema from './validate';
 import { useModalStore } from '@/lib/modalStore/modalStore';
 import { useToast } from '@/hooks/useToast';
 import { registrationAction } from '@/app/actions/auth-actions';
+import { getFingerprint } from '@/lib/utils/fingerprint';
+import { useRouter } from 'next/navigation';
+import switchModal from '@/lib/utils/switchModal';
 
 interface UseFormData {
   username: string;
@@ -20,13 +23,14 @@ interface UseFormData {
 }
 
 const RegisterModal: FC = () => {
+  const router = useRouter();
   const { closeModal, openModal } = useModalStore();
   const { showError } = useToast();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     control,
     reset,
   } = useForm<UseFormData>({
@@ -35,13 +39,21 @@ const RegisterModal: FC = () => {
     reValidateMode: 'onChange',
   });
 
- const username = useWatch({ control, name: 'username' });
+  const username = useWatch({ control, name: 'username' });
   const password = useWatch({ control, name: 'password' });
   const isFormReady = !!(username && password);
 
   const onSubmit = async (formData: AuthFormData) => {
     try {
-      await registrationAction(formData.username, formData.password);
+      const fingerprint = await getFingerprint();
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('fingerprint', fingerprint);
+      }
+
+      const { username, password } = formData;
+      const registrationData = { username, password, fingerprint };
+      await registrationAction(registrationData);
 
       reset();
       closeModal();
@@ -87,7 +99,7 @@ const RegisterModal: FC = () => {
             <Button
               variant="defaultButton"
               type="submit"
-              disabled={Object.keys(errors).length > 0 || isSubmitting || !isFormReady}
+              disabled={Object.keys(errors).length > 0 || !isFormReady}
             >
               SIGN UP
             </Button>
@@ -97,7 +109,14 @@ const RegisterModal: FC = () => {
           If you already have an account, please{' '}
           <button
             type="button"
-            onClick={() => openModal('authorization')}
+            onClick={() =>
+              switchModal({
+                closeModal,
+                openModal: () => openModal('authorization'),
+                type: 'login',
+                router,
+              })
+            }
             className={styles.loginbutton}
           >
             log in

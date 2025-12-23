@@ -7,25 +7,37 @@ export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.delete('accessToken');
   cookieStore.delete('refreshToken');
-  redirect('/login');
+  redirect('/artists/static');
 }
 
-export async function loginAction(username: string, password: string) {
+interface RegistrationData {
+  username: string;
+  password: string;
+  fingerprint: string;
+}
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export async function loginAction(username: string, password: string, fingerprint: string) {
   const cookieStore = await cookies();
-  
-  const response = await fetch(`${process.env.API_URL}/auth/login`, {
+
+  const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password, fingerprint }),
   });
 
   if (!response.ok) {
-    throw new Error('Login failed');
+    const errorData = await response.json().catch(() => ({}));
+    const error = new Error(errorData.message || 'Login failed');
+    Object.assign(error, { data: errorData });
+    throw error;
   }
 
   const data = await response.json();
 
-  // Устанавливаем БЕЗОПАСНЫЕ куки
   cookieStore.set({
     name: 'accessToken',
     value: data.accessToken,
@@ -44,21 +56,18 @@ export async function loginAction(username: string, password: string) {
     path: '/',
   });
 
-  redirect('/');
+  redirect('/artists');
 }
 
-export async function registrationAction(username: string, password: string) {
+export async function registrationAction({ username, password, fingerprint }: RegistrationData) {
   const cookieStore = await cookies();
-  
   try {
-    if (!username || !password) {
-      throw new Error('Username and password are required');
-    }
-
-    const response = await fetch(`${process.env.API_URL}/auth/register`, {
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password, fingerprint }),
     });
 
     if (!response.ok) {
@@ -85,9 +94,6 @@ export async function registrationAction(username: string, password: string) {
       maxAge: 60 * 60 * 24 * 7,
       path: '/',
     });
-
-    redirect('/');
-    
   } catch (error) {
     console.error('Registration error:', error);
     throw error;
