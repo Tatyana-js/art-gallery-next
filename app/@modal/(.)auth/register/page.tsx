@@ -57,6 +57,7 @@ const RegisterModal: FC = () => {
 
       reset();
       closeModal();
+      router.replace('/artists');
     } catch (err) {
       if (err && typeof err === 'object' && 'data' in err) {
         const errorData = err.data as {

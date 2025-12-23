@@ -11,9 +11,15 @@ interface IMultiSelectProps extends React.InputHTMLAttributes<HTMLInputElement> 
   genres: IGenre[];
   selectedGenres: string[];
   onGenresChange: (genreIds: string[]) => void;
+  error?: string;
 }
 
-const MultiSelect: React.FC<IMultiSelectProps> = ({ genres, selectedGenres, onGenresChange }) => {
+const MultiSelect: React.FC<IMultiSelectProps> = ({
+  genres,
+  selectedGenres,
+  onGenresChange,
+  error,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleGenre = (genre: IGenre) => {
@@ -35,14 +41,29 @@ const MultiSelect: React.FC<IMultiSelectProps> = ({ genres, selectedGenres, onGe
     .map((id) => genres.find((genre) => genre._id === id))
     .filter((genre): genre is IGenre => genre !== undefined);
 
+  const handleGenreClick = (e: React.MouseEvent, genre: IGenre) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleGenre(genre);
+  };
+
   const renderSelect = (genres: IGenre[]) => (
-    <div className={styles.genreContainer}>
+    <div className={styles.genreContainer} onClick={(e) => e.stopPropagation()}>
       {genres?.map((genre) => (
-        <div key={genre._id} className={styles.containerGenre}>
+        <div
+          key={genre._id}
+          className={styles.containerGenre}
+          onClick={(e) => handleGenreClick(e, genre)}
+        >
           <Checkbox
             text={genre.name}
             checked={isSelected(genre._id)}
-            onChange={() => toggleGenre(genre)}
+            readOnly
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleGenreClick(e, genre);
+            }}
           />
         </div>
       ))}
@@ -53,7 +74,7 @@ const MultiSelect: React.FC<IMultiSelectProps> = ({ genres, selectedGenres, onGe
     <div className={styles.selectedGenres}>
       {selectedGenres.map((genre) => (
         <div key={genre._id} className={styles.selectedItem}>
-          <Label key={genre._id} onClick={() => toggleGenre(genre)} showCloseButton={true}>
+          <Label onClick={() => toggleGenre(genre)} showCloseButton={true}>
             {genre.name}
           </Label>
         </div>
@@ -63,12 +84,15 @@ const MultiSelect: React.FC<IMultiSelectProps> = ({ genres, selectedGenres, onGe
 
   return (
     <div className={styles.multiContainer}>
-      <Input label="Genres*" readOnly />
+      <Input label="Genres*" readOnly error={error} />
       <button
         type="button"
         aria-label="Toggle dropdown menu"
         className={clsx(styles.selectButton, isOpen && styles.rotated)}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
       >
         <SelectButton />
       </button>

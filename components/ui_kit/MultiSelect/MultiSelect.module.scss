@@ -12,10 +12,11 @@
   overflow-y: scroll;
   transition: all 0.3s ease;
   z-index: 10000;
-  transform: translateY(-10px);
+  position: relative;
   color: var(--button-icon);
   background-color: var(--input-background);
   border: var(--border_checkbox);
+  pointer-events: auto;
   &.open {
     opacity: 1;
     transform: translateY(0);
@@ -46,8 +47,10 @@
   gap: 12px;
   border: none;
   padding: 8px 15px;
+  cursor: pointer;
   @include fonts('Inter', sans-serif, 300, 16px, 140%);
   color: var(--input-color);
+  pointer-events: auto;
   &:hover {
     background-color: var(--genre-container);
     z-index: 5;
@@ -60,7 +63,7 @@
   height: 44px;
   display: inline;
   top: 22px;
-
+  pointer-events: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -69,6 +72,7 @@
 }
 .selectedItem {
   display: inline;
+  pointer-events: auto;
 }
 
 @include screen(tablet) {

@@ -13,6 +13,7 @@ import { useModalStore } from '@/lib/modalStore/modalStore';
 import MenuModal from '../MenuModal';
 import AuthModal from '@/app/@modal/(.)auth/login/page';
 import RegisterModal from '@/app/@modal/(.)auth/register/page';
+import ArtistModal from '../ArtistModal/ArtistModal';
 
 const Modal: FC = () => {
   const { currentModal, closeModal } = useModalStore();
@@ -80,6 +81,8 @@ const Modal: FC = () => {
         return <AuthModal />;
       case 'registration':
         return <RegisterModal />;
+      case 'addArtist':
+        return <ArtistModal />
     }
   };
 

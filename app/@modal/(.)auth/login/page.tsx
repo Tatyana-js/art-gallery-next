@@ -48,11 +48,13 @@ const AuthModal: FC = () => {
       if (typeof window !== 'undefined') {
         localStorage.setItem('fingerprint', fingerprint);
       }
-
-      await loginAction(formData.username, formData.password, fingerprint);
+      const { username, password } = formData;
+      const loginData = { username, password, fingerprint };
+      await loginAction(loginData);
 
       reset();
       closeModal();
+      router.replace('/artists');
     } catch (err) {
       if (err && typeof err === 'object' && 'data' in err) {
         const errorData = err.data as {

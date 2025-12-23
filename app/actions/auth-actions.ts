@@ -18,7 +18,7 @@ interface RegistrationData {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function loginAction(username: string, password: string, fingerprint: string) {
+export async function loginAction({ username, password, fingerprint }: RegistrationData) {
   const cookieStore = await cookies();
 
   const response = await fetch(`${API_URL}/auth/login`, {
@@ -41,7 +41,7 @@ export async function loginAction(username: string, password: string, fingerprin
   cookieStore.set({
     name: 'accessToken',
     value: data.accessToken,
-    httpOnly: true, // ← защита от XSS
+    httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     maxAge: 60 * 15, // 15 минут
     path: '/',
@@ -55,8 +55,6 @@ export async function loginAction(username: string, password: string, fingerprin
     maxAge: 60 * 60 * 24 * 7, // 7 дней
     path: '/',
   });
-
-  redirect('/artists');
 }
 
 export async function registrationAction({ username, password, fingerprint }: RegistrationData) {

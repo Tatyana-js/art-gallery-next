@@ -1,79 +1,80 @@
-// import { useGetGenresQuery } from '@/store/api/artistsApi';
-// import { BaseSyntheticEvent, FC, useMemo } from 'react';
-// import { useFormContext } from 'react-hook-form';
+import { BaseSyntheticEvent, FC, useEffect, useState } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
+import styles from './ArtistForm.module.scss';
+import Loader from '@/components/shared/Loader';
+import { ICreateArtistRequest, IGenre } from '@/types/Artist';
+import Button from '@/components/ui_kit/Buttons';
+import Input from '@/components/ui_kit/Input';
+import MultiSelect from '@/components/ui_kit/MultiSelect';
+import TextArea from '@/components/ui_kit/Textarea';
+import { getGenres } from '@/lib/api/genres';
 
-// import styles from './ArtistForm.module.scss';
+interface IArtistFormProps {
+  onSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
+  isLoading: boolean;
+}
 
-// import Loader from '@/components/Loader';
+const AddArtistForm: FC<IArtistFormProps> = ({ onSubmit, isLoading }) => {
+  const {
+    register,
+    formState: { errors },
+    setValue,
+    control,
+  } = useFormContext<ICreateArtistRequest>();
 
-// import { ICreateArtistRequest } from '@/types/Artist';
-// import type { theme } from '@/types/types';
+  const [genresData, setGenresData] = useState<IGenre[]>([]);
 
-// import Button from '@/ui_kit/Buttons';
-// import Input from '@/ui_kit/Input';
-// import MultiSelect from '@/ui_kit/MultiSelect';
-// import TextArea from '@/ui_kit/Textarea';
+  useEffect(() => {
+    const loadGenres = async () => {
+      const genres = await getGenres();
+      setGenresData(genres);
+    };
+    loadGenres();
+  }, []);
 
-// interface IArtistFormProps {
-//   theme: theme;
-//   onSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
-//   isLoading: boolean;
-// }
+  const selectedGenreIds = useWatch({
+    control,
+    name: 'genres',
+    defaultValue: [],
+  }) as string[];
 
-// const AddArtistForm: FC<IArtistFormProps> = ({ theme, onSubmit, isLoading }) => {
-//   const {
-//     register,
-//     formState: { errors },
-//     setValue,
-//     watch,
-//   } = useFormContext<ICreateArtistRequest>();
+  const handleGenresChange = (genreIds: string[]) => {
+    setValue('genres', genreIds, { shouldValidate: true, shouldDirty: true, shouldTouch: true });
+  };
 
-//   const { data: genresData } = useGetGenresQuery();
-//   const selectedGenreIds = watch('genres') || [];
+  return (
+    <form className={styles.formContainer} onSubmit={onSubmit}>
+      <Input
+        label="Name*"
+        type="name"
+        {...register('name')}
+        placeholder="Ivan Aivazovsky"
+        error={errors.name?.message}
+      />
+      <Input
+        label="Years of life"
+        type="text"
+        {...register('yearsOfLife')}
+        error={errors.yearsOfLife?.message}
+      />
+      <Input label="Location" type="text" {...register('location')} />
+      <TextArea
+        label="Description"
+        {...register('description')}
+        error={errors.description?.message}
+      />
+      <MultiSelect
+        genres={genresData}
+        selectedGenres={selectedGenreIds}
+        onGenresChange={handleGenresChange}
+      />
+      <div className={styles.buttonContainer}>
+        <Button type="submit" variant="defaultButton" disabled={isLoading}>
+          {isLoading ? <Loader /> : 'SAVE'}
+        </Button>
+      </div>
+    </form>
+  );
+};
 
-//   const genres = useMemo(() => genresData || [], [genresData]);
-
-//   const handleGenresChange = (genreIds: string[]) => {
-//     setValue('genres', genreIds, { shouldValidate: true });
-//   };
-
-//   return (
-//     <form className={styles.formContainer} onSubmit={onSubmit}>
-//       <Input
-//         label="Name*"
-//         theme={theme}
-//         type="name"
-//         {...register('name')}
-//         placeholder="Ivan Aivazovsky"
-//         error={errors.name?.message}
-//       />
-//       <Input
-//         label="Years of life"
-//         theme={theme}
-//         type="text"
-//         {...register('yearsOfLife')}
-//         error={errors.yearsOfLife?.message}
-//       />
-//       <Input label="Location" theme={theme} type="text" {...register('location')} />
-//       <TextArea
-//         label="Description"
-//         theme={theme}
-//         {...register('description')}
-//         error={errors.description?.message}
-//       />
-//       <MultiSelect
-//         genres={genres || []}
-//         theme={theme}
-//         selectedGenres={selectedGenreIds}
-//         onGenresChange={handleGenresChange}
-//       />
-//       <div className={styles.buttonContainer}>
-//         <Button type="submit" variant="defaultButton" theme={theme} disabled={isLoading}>
-//           {isLoading ? <Loader theme={theme} /> : 'SAVE'}
-//         </Button>
-//       </div>
-//     </form>
-//   );
-// };
-
-// export default AddArtistForm;
+export default AddArtistForm;
