@@ -19,42 +19,46 @@ interface RegistrationData {
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function loginAction({ username, password, fingerprint }: RegistrationData) {
-  const cookieStore = await cookies();
+  try {
+    const cookieStore = await cookies();
 
-  const response = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username, password, fingerprint }),
-  });
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password, fingerprint }),
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    const error = new Error(errorData.message || 'Login failed');
-    Object.assign(error, { data: errorData });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ message: '' }));
+      const message = errorData.message;
+
+      throw new Error(message || 'Login failed');
+    }
+
+    const data = await response.json();
+
+    cookieStore.set({
+      name: 'accessToken',
+      value: data.accessToken,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 15, // 15 минут
+      path: '/',
+    });
+
+    cookieStore.set({
+      name: 'refreshToken',
+      value: data.refreshToken,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 7, // 7 дней
+      path: '/',
+    });
+  } catch (error) {
     throw error;
   }
-
-  const data = await response.json();
-
-  cookieStore.set({
-    name: 'accessToken',
-    value: data.accessToken,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 60 * 15, // 15 минут
-    path: '/',
-  });
-
-  cookieStore.set({
-    name: 'refreshToken',
-    value: data.refreshToken,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 60 * 60 * 24 * 7, // 7 дней
-    path: '/',
-  });
 }
 
 export async function registrationAction({ username, password, fingerprint }: RegistrationData) {

@@ -1,9 +1,11 @@
 import { cache } from 'react';
 import type IArtist from '@/types/Artist';
+import { setupClientApi } from './interceptor';
+import type { AxiosError } from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-async function getAuthToken(): Promise<{ token: string | undefined; isAuth: boolean }> {
+async function getToken(): Promise<{ token: string | undefined; isAuth: boolean }> {
   const { cookies } = await import('next/headers');
   const cookieStore = await cookies();
   const token = cookieStore.get('accessToken')?.value;
@@ -12,7 +14,7 @@ async function getAuthToken(): Promise<{ token: string | undefined; isAuth: bool
 
 export const getArtists = cache(
   async (params?: { search?: string; genres?: string[]; sort?: string }) => {
-    const { token, isAuth } = await getAuthToken();
+    const { token, isAuth } = await getToken();
 
     const endpoint = isAuth ? '/artists' : '/artists/static/';
     const searchParams = new URLSearchParams();
@@ -64,11 +66,7 @@ export const getArtists = cache(
 );
 
 export const getArtistById = cache(async (id: string | undefined): Promise<IArtist | null> => {
-  if (!id) {
-    return null;
-  }
-
-  const { token, isAuth } = await getAuthToken();
+  const { token, isAuth } = await getToken();
 
   const endpoint = isAuth ? `/artists/${id}` : `/artists/static/${id}`;
   const url = `${API_URL}${endpoint}`;
@@ -93,3 +91,41 @@ export const getArtistById = cache(async (id: string | undefined): Promise<IArti
     return null;
   }
 });
+
+export const createArtist = async (formData: FormData) => {
+  const api = setupClientApi();
+  try {
+    const response = await api.post('/artists', formData);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error creating artist:', error);
+    const axiosError = error as AxiosError<{ message?: string }>;
+    if (axiosError.response?.data?.message) {
+      throw new Error(axiosError.response.data.message);
+    }
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Failed to create artist');
+  }
+};
+
+export const updateArtist = async (id: string, formData: FormData) => {
+  const api = setupClientApi();
+  try {
+    const response = await api.put(`/artists/${id}`, formData);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error updating artist:', error);
+    const axiosError = error as AxiosError<{ message?: string }>;
+    if (axiosError.response?.data?.message) {
+      throw new Error(axiosError.response.data.message);
+    }
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Failed to update artist');
+  }
+};

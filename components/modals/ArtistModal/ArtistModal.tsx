@@ -3,21 +3,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
 import { FC, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type IArtist from '@/types/Artist';
-
 import styles from './ArtistModal.module.scss';
-
 import EmptyCard from '@/components/shared/EmptyCard';
-
 import { ICreateArtistRequest } from '@/types/Artist';
-
 import getImageSrc from '@/lib/utils/getImageSrc';
-
 import ArtistForm from './ArtistForm/ArtistForm';
 import addArtistSchema from './validate';
-import { getArtistById } from '@/lib/api/artistsApi';
-// import router from 'next/router';
+import { createArtist, getArtistById, updateArtist } from '@/lib/api/artistsApi';
 import { useModalStore } from '@/lib/modalStore/modalStore';
 
 const ArtistModal: FC = () => {
@@ -29,6 +23,7 @@ const ArtistModal: FC = () => {
 
   const { theme } = useTheme();
   const { closeModal } = useModalStore();
+  const router = useRouter();
   const pathname = usePathname();
   const isEditMode = pathname?.includes('/artists/');
   const id = pathname?.split('/')[2];
@@ -96,17 +91,16 @@ const ArtistModal: FC = () => {
       if (selectedFile) {
         formDataToSend.append('avatar', selectedFile);
       }
+      let responseArtist;
 
-      // TODO: Implement createArtist and updateArtist API functions
-      // if (isEditMode && id) {
-      //   responseArtist = await updateArtist(id, formDataToSend);
-      // } else {
-      //   responseArtist = await createArtist(formDataToSend);
-      // }
-
+      if (isEditMode && id) {
+        responseArtist = await updateArtist(id, formDataToSend);
+      } else {
+        responseArtist = await createArtist(formDataToSend);
+      }
       methods.reset();
       closeModal();
-      // router.replace(`/artists/${responseArtist._id}`);
+      router.push(`/artists/${responseArtist._id}`);
     } catch (err) {
       if (err instanceof Error) {
         methods.setError('root.serverError', {

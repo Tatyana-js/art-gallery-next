@@ -11,7 +11,6 @@ export interface IToastProviderProps {
 export const ToastProvider: FC<IToastProviderProps> = ({ children }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const MAX_TOASTS = 3;
-
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
@@ -35,7 +34,7 @@ export const ToastProvider: FC<IToastProviderProps> = ({ children }) => {
         }, duration);
       }
     },
-    [removeToast, MAX_TOASTS]
+    [removeToast]
   );
 
   const value: ToastContextType = useMemo(
@@ -48,10 +47,10 @@ export const ToastProvider: FC<IToastProviderProps> = ({ children }) => {
   );
 
   return (
-    <ToastContext value={value}>
+    <ToastContext.Provider value={value}>
       {children}
       <ToastComponent toasts={toasts} removeToast={removeToast} />
-    </ToastContext>
+    </ToastContext.Provider>
   );
 };
 export { ToastComponent };

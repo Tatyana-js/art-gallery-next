@@ -2,7 +2,9 @@ import { Toast } from '@/lib/Context/errorContext';
 import { FC } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './ToastComponent.module.scss';
-import ToastItem from './ToastItem/ToastItem';
+import Button from '@/components/ui_kit/Buttons';
+import ClearIcon from '@/components/icons/ClearIcon';
+import ErrorIcon from '@/components/icons/ErrorIcon';
 
 interface IToastComponentProps {
   toasts: Toast[];
@@ -15,7 +17,25 @@ const ToastComponent: FC<IToastComponentProps> = ({ toasts, removeToast }) => {
   return createPortal(
     <div className={styles.toastContainer}>
       {toasts.map((toast) => (
-        <ToastItem key={toast.id} toast={toast} onClose={removeToast} />
+        <div
+          key={toast.id}
+          className={`${styles.errorContainer} ${styles.toast}`}
+          data-toast="true"
+        >
+          <div className={styles.lineError}></div>
+          <div className={styles.content}>
+            <p className={styles.errorText}>Error!</p>
+            <p className={styles.message}>{toast.message}</p>
+          </div>
+          <div className={styles.errorButton}>
+            <ErrorIcon />
+          </div>
+          <div className={styles.closeButton}>
+            <Button variant="icon" onClick={() => removeToast(toast.id)}>
+              <ClearIcon />
+            </Button>
+          </div>
+        </div>
       ))}
     </div>,
     document.body

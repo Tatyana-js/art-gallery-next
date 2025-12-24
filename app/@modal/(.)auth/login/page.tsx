@@ -62,10 +62,12 @@ const AuthModal: FC = () => {
           message?: string;
           error?: string;
         };
-        if (errorData.statusCode === 409) {
+        if (errorData.statusCode === 401 || errorData.statusCode === 409) {
           showError('Неверный email или пароль');
         } else if (errorData.statusCode === 404) {
           showError('Пользователь с таким email не существует');
+        } else {
+          showError(errorData.message || 'Ошибка авторизации');
         }
       } else {
         showError('Ошибка авторизации');

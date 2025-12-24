@@ -19,8 +19,8 @@ export default async function RootLayout({
   const isAuth = !!cookieStore.get('accessToken')?.value;
 
   return (
-    <html lang="en">
-      <body className={clsx(`${inter.className}, ${cormorant.className}, container`)}>
+    <html lang="en" className={clsx(inter.variable, cormorant.variable)}>
+      <body className={clsx(inter.className, cormorant.className, 'container')}>
         <ThemeProvider>
           <ToastProvider>
             <Header isAuth={isAuth} />
