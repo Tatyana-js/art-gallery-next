@@ -1,11 +1,16 @@
 {
-	"folders": [
-		{
-			"path": "../../.."
-		},
-		{
-			"path": "../../../../../vite"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../../..",
+    },
+    {
+      "path": "../../../../../vite",
+    },
+  ],
+  "settings": {
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.snippetSuggestions": "none",
+    "workbench.commandPalette.experimental.enableNaturalLanguageSearch": true,
+    "inlineChat.lineNaturalLanguageHint": false,
+  },
 }

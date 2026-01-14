@@ -1,6 +1,3 @@
-@use '@/styles/variables.scss' as *;
-@use '@/styles/mixins.scss' as *;
-
 .container {
   position: absolute;
   bottom: 0;
@@ -19,18 +16,13 @@
   max-width: 100%;
   width: 100%;
   @include fonts('Inter', sans-serif, 500, 16px, 140%);
-  &--light {
-    color: $primary-dark-gray;
-  }
-  &--dark {
-    color: $primary-light-gray;
-  }
+  color: var(--input-color);
 }
 .textWarning {
   padding: 0 10px;
   text-align: center;
   @include fonts('Inter', sans-serif, 300, 12px, 140%);
-  color: $secondary-gray;
+  color: var(--secondary-gray);
 }
 .deleteButton {
   display: none;

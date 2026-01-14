@@ -1,0 +1,32 @@
+.cardContainer {
+  position: relative;
+}
+.workTitle {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  @include fonts('Cormorant SC', sans-serif, 600, 32px, 100%);
+  align-self: flex-start;
+  color: var(--accent-color);
+}
+.containerPicture {
+  display: flex;
+  flex-direction: column;
+}
+.addPicture {
+  margin-bottom: 16px;
+  align-self: flex-end;
+}
+@include screen(tablet) {
+  .workTitle {
+    margin-top: 18px;
+  }
+  .addPicture {
+    margin-bottom: 20px;
+  }
+}
+
+@include screen(tablet_lg) {
+  .workTitle {
+    margin-top: 18px;
+  }
+}

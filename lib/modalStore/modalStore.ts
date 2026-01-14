@@ -1,11 +1,21 @@
 import { create } from 'zustand';
 import { ModalVariant } from '@/types/types';
+import type IArtist from '@/types/Artist';
+import { IPainting } from '@/types/Artist';
 
 interface ModalStore {
   currentModal: {
     variant: ModalVariant | null;
+    data?: {
+      artist?: IArtist;
+      painting?: IPainting;
+      type?: string;
+    };
   };
-  openModal: (variant: ModalVariant) => void;
+  openModal: (
+    variant: ModalVariant,
+    data?: { artist?: IArtist; painting?: IPainting; type?: string }
+  ) => void;
   closeModal: () => void;
 
   searchValue: string;
@@ -17,15 +27,15 @@ export const useModalStore = create<ModalStore>((set) => ({
 
   searchValue: '',
 
-  openModal: (variant) => {
+  openModal: (variant, data) => {
     set({
-      currentModal: { variant },
+      currentModal: { variant, data },
     });
   },
 
   closeModal: () => {
     set({
-      currentModal: { variant: null },
+      currentModal: { variant: null, data: undefined },
     });
   },
 

@@ -1,0 +1,9 @@
+.containerArtist {
+  background-color: var(--background-color);
+}
+
+@include screen(tablet_lg) {
+  .containerArtist {
+    margin: 0 auto;
+  }
+}

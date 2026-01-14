@@ -1,0 +1,51 @@
+.container {
+  width: 138px;
+  height: 133px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  top: 12px;
+  left: 12px;
+}
+.iconContainer {
+  width: 28px;
+  height: 28px;
+  position: relative;
+  background-color: var(--primary-light-gray);
+  svg {
+    top: 50%;
+    left: 50%;
+  }
+}
+.settingsMenu {
+  width: 138px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 16px;
+  gap: 12px;
+  border-radius: 5%;
+  background-color: var(--button-theme);
+  &::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 7px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid;
+  }
+}
+.setCoverButton {
+  @include fonts('Inter', sans-serif, 700, 12px, 100%);
+  background-color: transparent;
+  border: none;
+  color: var(--accent-color);
+}
+.buttons {
+  @include fonts('Inter', sans-serif, 700, 12px, 100%);
+  background-color: transparent;
+  border: none;
+  color: var(--input-color);
+}

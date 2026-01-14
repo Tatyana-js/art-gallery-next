@@ -34,7 +34,16 @@ const Header: FC<IHeaderProps> = ({ isAuth }) => {
 
   const handleAuthClick = (type: 'login' | 'register') => {
     openModal(type === 'login' ? 'authorization' : 'registration');
-
+    if (typeof window !== 'undefined') {
+      const pathname = window.location.pathname;
+      const match = pathname.match(/\/artists\/static\/([^\/]+)/);
+      
+      if (match) {
+        localStorage.setItem('return_artist_id', match[1]);
+      } else {
+        localStorage.removeItem('return_artist_id');
+      }
+    }
     router.push(`/auth/${type}`);
   };
 

@@ -1,0 +1,112 @@
+.container {
+  position: relative;
+  padding: 52px 0;
+}
+.buttonsBack {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+  position: absolute;
+  top: 16px;
+  background-color: transparent;
+  border: none;
+  color: var(--label-color);
+  &:hover {
+    cursor: pointer;
+  }
+  svg {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  svg {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(180deg);
+    color: var(--label-color);
+  }
+}
+.backText {
+  display: none;
+}
+.tabletLgOnly {
+  display: none;
+}
+.editButtons {
+  width: 76px;
+  height: 28px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@include screen(tablet) {
+  .container {
+    padding: 80px 0;
+  }
+  .buttonsBack {
+    width: 70px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    top: 36px;
+    gap: 12px;
+    .backText {
+      display: flex;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+@include screen(tablet_lg) {
+  .container {
+    padding: 100px 0;
+    overflow: hidden;
+  }
+  .buttonsBack {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .tabletLgOnly {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: absolute;
+    width: 604px;
+    top: 160px;
+    left: 100px;
+    padding: 60px 80px;
+    background-color: var(--background-color);
+  }
+  .line {
+    display: flex;
+    position: absolute;
+    width: 2px;
+    height: 73px;
+    left: 0;
+    top: 110px;
+    transition: all 0.5s ease;
+    background-color: var(--accent-color);
+  }
+  .details {
+    @include fonts('Cormorant SC', sans-serif, 500, 16px, 100%);
+    color: var(--button-icon);
+  }
+  .name {
+    @include fonts('Cormorant SC', sans-serif, 500, 60px, 100%);
+    color: var(--accent-color);
+  }
+  .notDesctop {
+    display: none;
+  }
+  .editButtons {
+    right: 100px;
+  }
+}

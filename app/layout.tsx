@@ -9,10 +9,8 @@ import clsx from 'clsx';
 
 export default async function RootLayout({
   children,
-  modal,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }) {
   const { cookies } = await import('next/headers');
   const cookieStore = await cookies();
@@ -26,7 +24,6 @@ export default async function RootLayout({
             <Header isAuth={isAuth} />
             <main>
               {children}
-              {modal}
             </main>
             <Footer />
             <Modal />

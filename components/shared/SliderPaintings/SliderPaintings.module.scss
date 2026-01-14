@@ -1,0 +1,139 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+.mainImageContainer {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.thumbnails {
+  display: none;
+}
+.thumbnailWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.setContainer {
+  display: flex;
+  width: 164px;
+  height: 28px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  gap: 12px;
+  z-index: 3;
+}
+.previewIcon {
+  width: 28px;
+  height: 28px;
+}
+.infoContainer {
+  width: 253px;
+  max-width: 100%;
+  min-width: 236px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  bottom: 80px;
+  left: 0;
+  border: none;
+  padding: 8px 12px;
+  z-index: 3;
+  @include fonts('Cormorant SC', sans-serif, 500, 12px, 100%);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+.details {
+  margin-top: 4px;
+  @include fonts('Inter', sans-serif, 700, 8px, 100%);
+  color: var(--accent-colo);
+}
+.editButtons {
+  width: 76px;
+  height: 28px;
+  position: absolute;
+  bottom: 20px;
+  left: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 4;
+}
+.pageCounter {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: transparent;
+  @include fonts('Cormorant SC', sans-serif, 700, 16px, 128%);
+  color: var(--primary-light-gray);
+  z-index: 3;
+}
+.line {
+  display: none;
+}
+.clearButton {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  color: var(--input-color);
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+@include screen(tablet) {
+  .setContainer {
+    top: 40px;
+    left: 40px;
+  }
+  .infoContainer {
+    width: 498px;
+    gap: 8px;
+    bottom: 60px;
+    left: 40px;
+    @include fonts('Cormorant SC', sans-serif, 500, 16px, 100%);
+    padding: 40px 20px;
+  }
+  .details {
+    @include fonts('Inter', sans-serif, 700, 12px, 100%);
+  }
+  .editButtons {
+    bottom: 134px;
+    left: 442px;
+  }
+  .line {
+    display: flex;
+    position: absolute;
+    width: 2px;
+    height: 48px;
+    left: 0;
+    top: 40px;
+    transition: all 0.5s ease;
+    background-color: var(--accent-color);
+    svg {
+      display: none;
+    }
+  }
+  .clearButton {
+    right: 24px;
+    top: 36px;
+  }
+}

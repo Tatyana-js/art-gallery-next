@@ -13,7 +13,9 @@ const switchModal = (params: SwitchModalParams) => {
   const { closeModal, openModal, type, router } = params;
 
   closeModal();
-  router.replace(`/auth/${type}`, { scroll: false });
+  const newUrl = `/auth/${type}`;
+
+  router.replace(newUrl, { scroll: false }); 
 
   setTimeout(() => {
     openModal();

@@ -54,7 +54,15 @@ const AuthModal: FC = () => {
 
       reset();
       closeModal();
-      router.replace('/artists');
+
+      const artistId = localStorage.getItem('return_artist_id');
+
+      if (artistId) {
+        router.replace(`/artists/${artistId}`);
+        localStorage.removeItem('return_artist_id');
+      } else {
+        router.replace('/artists');
+      }
     } catch (err) {
       if (err && typeof err === 'object' && 'data' in err) {
         const errorData = err.data as {

@@ -1,7 +1,5 @@
 import { cache } from 'react';
 import type IArtist from '@/types/Artist';
-import { setupClientApi } from './interceptor';
-import type { AxiosError } from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,12 +11,12 @@ async function getToken(): Promise<{ token: string | undefined; isAuth: boolean 
 }
 
 export const getArtists = cache(
-  async (params?: { search?: string; genres?: string[]; sort?: string }) => {
+  async (params?: { name?: string; genres?: string[]; sort?: string }) => {
     const { token, isAuth } = await getToken();
 
     const endpoint = isAuth ? '/artists' : '/artists/static/';
     const searchParams = new URLSearchParams();
-    if (params?.search) searchParams.append('search', params.search);
+    if (params?.name) searchParams.append('name', params.name);
     if (params?.sort) searchParams.append('sort', params.sort);
     if (params?.genres && params.genres.length > 0) {
       params.genres.forEach((genre) => {
@@ -93,39 +91,56 @@ export const getArtistById = cache(async (id: string | undefined): Promise<IArti
 });
 
 export const createArtist = async (formData: FormData) => {
-  const api = setupClientApi();
-  try {
-    const response = await api.post('/artists', formData);
+  const response = await fetch('/api/artists', {
+    method: 'POST',
+    body: formData,
+  });
 
-    return response.data;
-  } catch (error) {
-    console.error('Error creating artist:', error);
-    const axiosError = error as AxiosError<{ message?: string }>;
-    if (axiosError.response?.data?.message) {
-      throw new Error(axiosError.response.data.message);
-    }
-    if (error instanceof Error) {
-      throw error;
-    }
-    throw new Error('Failed to create artist');
+  const data = (await response.json().catch(() => null)) as unknown;
+  if (!response.ok) {
+    const message =
+      data &&
+      typeof data === 'object' &&
+      'message' in data &&
+      typeof (data as { message?: unknown }).message === 'string'
+        ? (data as { message: string }).message
+        : undefined;
+    throw new Error(message || 'Failed to create artist');
   }
+  return data;
 };
 
 export const updateArtist = async (id: string, formData: FormData) => {
-  const api = setupClientApi();
   try {
-    const response = await api.put(`/artists/${id}`, formData);
+    const response = await fetch(`/api/artists/${id}`, {
+      method: 'PUT',
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update artist');
+    }
+    const data = await response.json();
 
-    return response.data;
+    return data;
   } catch (error) {
     console.error('Error updating artist:', error);
-    const axiosError = error as AxiosError<{ message?: string }>;
-    if (axiosError.response?.data?.message) {
-      throw new Error(axiosError.response.data.message);
+    return null;
+  }
+};
+
+export const deleteArtist = async (id: string) => {
+  try {
+    const response = await fetch(`/api/artists/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete artist');
     }
-    if (error instanceof Error) {
-      throw error;
-    }
-    throw new Error('Failed to update artist');
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('Error deleting artist:', error);
+    return null;
   }
 };

@@ -32,6 +32,7 @@
   &:focus {
     outline: none;
     border: 1px solid var(--input-color);
+    padding: 16px;
     &.placeholder {
       opacity: 0;
     }

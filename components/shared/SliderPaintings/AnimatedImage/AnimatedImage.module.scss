@@ -1,0 +1,100 @@
+.sliderContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateZ(0);
+}
+.image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.buttonNext,
+.buttonPrev {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+}
+.buttonNext {
+  right: 0;
+  svg {
+    transform: rotate(90deg);
+    top: 0;
+    left: 0;
+  }
+}
+.buttonPrev {
+  left: 0;
+  svg {
+    transform: rotate(-90deg);
+    top: 0;
+    right: 0;
+  }
+}
+.prevImage {
+  z-index: 1;
+}
+
+.slideOutLeft {
+  animation: slideOutLeft 0.5s ease-in-out forwards;
+}
+
+.slideOutRight {
+  animation: slideOutRight 0.5s ease-in-out forwards;
+}
+.currentImage {
+  z-index: 2;
+}
+
+.slideInRight {
+  animation: slideInRight 0.5s ease-in-out forwards;
+}
+
+.slideInLeft {
+  animation: slideInLeft 0.5s ease-in-out forwards;
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0.8;
+  }
+}
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+}
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

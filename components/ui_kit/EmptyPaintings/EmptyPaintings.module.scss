@@ -1,0 +1,66 @@
+.paintings {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.emptyContainer {
+  width: 280px;
+  height: 185px;
+  display: flex;
+  justify-content: center;
+  border: 1px dashed var(--primary-dark-gray);
+  padding: 16px;
+  position: relative;
+  background-color: var(--button-theme);
+  & svg {
+    object-fit: contain;
+    width: auto;
+    height: auto;
+    position: static; // Отменяет absolute по умолчанию
+    transform: none;
+  }
+}
+.addButton {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  bottom: -27%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+}
+.messageContainer {
+  width: 260px;
+  margin: 0 auto;
+  margin-top: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 80px;
+}
+.line {
+  width: 160px;
+  height: 2px;
+  background-color: var(--accent-color);
+}
+.message {
+  text-align: center;
+  color: var(--primary-light-gray);
+  padding: 0 15px;
+  @include fonts('Cormorant SC', sans-serif, 500, 16px, 100%);
+}
+@include screen(tablet) {
+  .emptyContainer {
+    width: 352px;
+    height: 220px;
+  }
+  .messageContainer {
+    width: 486px;
+    margin-top: 110px;
+  }
+}

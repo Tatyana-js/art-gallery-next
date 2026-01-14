@@ -14,6 +14,7 @@ import MenuModal from '../MenuModal';
 import AuthModal from '@/app/@modal/(.)auth/login/page';
 import RegisterModal from '@/app/@modal/(.)auth/register/page';
 import ArtistModal from '../ArtistModal/ArtistModal';
+import DeleteModal from '../DeleteModal/DeleteModal';
 
 const Modal: FC = () => {
   const { currentModal, closeModal } = useModalStore();
@@ -82,7 +83,17 @@ const Modal: FC = () => {
       case 'registration':
         return <RegisterModal />;
       case 'addArtist':
-        return <ArtistModal />
+        return <ArtistModal />;
+      case 'deleteArtist':
+        return (
+          <DeleteModal
+            artist={currentModal.data?.artist}
+            type={currentModal.data?.type || 'artist'}
+            closeModal={closeModal}
+          />
+        );
+      default:
+        return null;
     }
   };
 

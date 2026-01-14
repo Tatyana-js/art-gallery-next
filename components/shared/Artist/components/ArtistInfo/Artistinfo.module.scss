@@ -1,0 +1,43 @@
+.description {
+  width: 100%;
+  background-color: transparent;
+  text-align: justify;
+  margin: 20px 0;
+  display: block;
+  @include fonts('Inter', sans-serif, 300, 16px, 140%);
+  color: var(--label-color);
+  &.gradient {
+    background: linear-gradient(180deg, var(--label-color) 0%, rgba(222, 222, 222, 0.4) 100%);
+    background-clip: text;
+    color: transparent;
+  }
+}
+.selectButton {
+  display: flex;
+  justify-content: space-between;
+  width: 96px;
+  gap: 8px;
+  border: none;
+  background-color: transparent;
+}
+.rotated {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(180deg);
+  color: var(--placeholder-color);
+}
+.genresContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  gap: 8px;
+}
+
+@include screen(tablet) {
+  .selectButton {
+    width: 120px;
+  }
+}

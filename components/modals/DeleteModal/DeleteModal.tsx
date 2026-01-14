@@ -1,93 +1,71 @@
-// import { useDeleteArtistMutation, useDeleteArtistPaintingMutation } from '@/store/api/artistsApi';
-// import clsx from 'clsx';
-// import { FC } from 'react';
-// import { useNavigate } from 'react-router-dom';
+'use client';
 
-// import styles from './DeleteModal.module.scss';
+import { FC } from 'react';
+import { useRouter } from 'next/navigation';
+import { deleteArtist } from '@/lib/api/artistsApi';
+import styles from './DeleteModal.module.scss';
+import IArtist, { IPainting } from '@/types/Artist';
+import Button from '@/components/ui_kit/Buttons';
+import DeleteIcon from '@/components/icons/DeleteIcon';
 
-// import IArtist, { IPainting } from '@/types/Artist';
-// import type { theme } from '@/types/types';
+interface IDeleteModalProps {
+  artist?: IArtist;
+  painting?: IPainting;
+  closeModal?: () => void;
+  type: string;
+}
 
-// import Button from '@/ui_kit/Buttons';
+const DeleteModal: FC<IDeleteModalProps> = ({ artist, painting, closeModal, type }) => {
+  const router = useRouter();
 
-// import routes from '@/utils/routes';
+  const handleDelete = async () => {
+    try {
+      if (type === 'artist' && artist) {
+        await deleteArtist(artist._id);
+        closeModal?.();
+        router.push('/artists');
+      } else if (type === 'painting' && painting && artist?._id) {
+        // TODO: Implement delete painting functionality
+        closeModal?.();
+      }
+    } catch (error) {
+      console.error('Failed to delete:', error);
+    }
+  };
 
-// import DeleteIcon from '@/assets/icons/DeleteIcon';
+  const getDeleteText = () => {
+    if (type === 'artist') {
+      return {
+        question: 'Do you want to delete this artist profile?',
+        warning: 'You will not be able to recover this profile afterwards.',
+      };
+    } else {
+      return {
+        question: 'Do you want to delete this painting?',
+        warning: 'You will not be able to recover this painting afterwards.',
+      };
+    }
+  };
 
-// interface IDeleteModaleProps {
-//   theme: theme;
-//   artist?: IArtist;
-//   painting?: IPainting;
-//   closeModal?: (value: boolean) => void;
-//   type: string;
-// }
+  const { question, warning } = getDeleteText();
 
-// const DeleteModale: FC<IDeleteModaleProps> = ({ theme, artist, painting, closeModal, type }) => {
-//   const [deleteArtist] = useDeleteArtistMutation();
-//   const [deleteArtistPainting] = useDeleteArtistPaintingMutation();
-//   const navigate = useNavigate();
+  return (
+    <div className={styles.container}>
+      <div className={styles.deleteButton}>
+        <Button variant="icon" onClick={handleDelete}>
+          <DeleteIcon />
+        </Button>
+      </div>
+      <p className={styles.deleteQuestion}>{question}</p>
+      <p className={styles.textWarning}>{warning}</p>
+      <Button variant="defaultButton" onClick={handleDelete}>
+        DELETE
+      </Button>
+      <Button variant="text" onClick={closeModal}>
+        CANCEL
+      </Button>
+    </div>
+  );
+};
 
-//   const artistId = artist?._id;
-
-//   const handleDelete = async () => {
-//     try {
-//       if (type === 'artist' && artist) {
-//         navigate(routes.artists());
-//         await deleteArtist(artist._id).unwrap();
-//         closeModal?.(false);
-//       } else if (type === 'painting' && painting && artistId) {
-//         await deleteArtistPainting({
-//           id: artistId,
-//           paintingId: painting._id,
-//         }).unwrap();
-//         closeModal?.(false);
-//       }
-//     } catch (error) {
-//       console.error('Failed to delete artist:', error);
-//     }
-//   };
-
-//   const getDeleteText = () => {
-//     if (type === 'artist') {
-//       return {
-//         question: 'Do you want to delete this artist profile?',
-//         warning: 'You will not be able to recover this profile afterwards.',
-//       };
-//     } else {
-//       return {
-//         question: 'Do you want to delete this painting?',
-//         warning: 'You will not be able to recover this painting afterwards.',
-//       };
-//     }
-//   };
-
-//   const { question, warning } = getDeleteText();
-
-//   return (
-//     <div className={styles.container}>
-//       <div className={styles.deleteButton}>
-//         <Button variant="icon" theme={theme} onClick={handleDelete}>
-//           <DeleteIcon />
-//         </Button>
-//       </div>
-//       <p className={clsx(styles.deleteQuestion, styles[`deleteQuestion--${theme}`])}>{question}</p>
-//       <p className={styles.textWarning}>{warning}</p>
-//       <Button variant="defaultButton" theme={theme} onClick={handleDelete}>
-//         DELETE
-//       </Button>
-//       <Button
-//         variant="text"
-//         theme={theme}
-//         onClick={() => {
-//           if (closeModal) {
-//             closeModal(false);
-//           }
-//         }}
-//       >
-//         CANCEL
-//       </Button>
-//     </div>
-//   );
-// };
-
-// export default DeleteModale;
+export default DeleteModal;

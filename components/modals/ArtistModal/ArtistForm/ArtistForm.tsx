@@ -1,7 +1,7 @@
 import { BaseSyntheticEvent, FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import styles from './ArtistForm.module.scss';
-import Loader from '@/components/shared/Loader';
+import Loader from '@/components/ui_kit/Loader';
 import { ICreateArtistRequest, IGenre } from '@/types/Artist';
 import Button from '@/components/ui_kit/Buttons';
 import Input from '@/components/ui_kit/Input';

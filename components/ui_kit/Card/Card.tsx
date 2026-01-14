@@ -34,6 +34,8 @@ const Card: FC<ICardProps> = ({ name, imageSrc, details, type, onClick }) => {
           alt={name || 'Avatar'}
           className={styles.cardImage}
           fill
+          priority={true}
+          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
         />
       )}
       <div className={clsx(styles.container, type === 'artist' && styles.containerArtist)}>
