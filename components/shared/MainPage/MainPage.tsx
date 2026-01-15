@@ -1,13 +1,16 @@
 'use client';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './MainPage.module.scss';
 import type IArtist from '@/types/Artist.ts';
 import Card from '@/components/ui_kit/Card';
 import Grid from '@/components/ui_kit/Grid';
+import Button from '@/components/ui_kit/Buttons';
 import AuthSection from '../AuthSection';
 import { useModalStore } from '@/lib/modalStore/modalStore';
 import { useRouter } from 'next/navigation';
 import { IGenre } from '@/types/Artist';
+import useMediaQuery from '@/hooks/useMediaQuery';
+import FilterComponent from '@/components/modals/Filter';
 
 interface IMainPageProps {
   artists: IArtist[];
@@ -18,7 +21,8 @@ interface IMainPageProps {
 
 const MainPage: FC<IMainPageProps> = ({ artists, isAuth }) => {
   const router = useRouter();
-  const visibleCount = 6;
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [visibleCount, setVisibleCount] = useState<number>(6);
 
   const [value, setValue] = useState('');
   const [artistsState, setArtistsState] = useState<IArtist[]>(artists);
@@ -44,8 +48,31 @@ const MainPage: FC<IMainPageProps> = ({ artists, isAuth }) => {
     setArtistsState(artists);
   }, [artists]);
 
-  const { openModal } = useModalStore();
-  const visibleArtists = artistsState?.slice(0, visibleCount) || [];
+  const { openModal, filterState, setFilterState } = useModalStore();
+
+  // reset pagination when dataset changes (search/filter results or initial SSR list)
+  useEffect(() => {
+    setVisibleCount(6);
+  }, [artistsState]);
+
+  const sortedArtists = useMemo(() => {
+    const sortSelected = filterState.sort.selected;
+    if (sortSelected === 'a_to_z') {
+      return [...artistsState].sort((a, b) => a.name.localeCompare(b.name));
+    }
+    if (sortSelected === 'z_to_a') {
+      return [...artistsState].sort((a, b) => b.name.localeCompare(a.name));
+    }
+    return artistsState;
+  }, [artistsState, filterState.sort.selected]);
+
+  const visibleArtists = sortedArtists?.slice(0, visibleCount) || [];
+  const hasMoreArtists = visibleCount < sortedArtists.length;
+
+  const handleLoadMore = () => {
+    const nextCount = Math.min(visibleCount + 6, sortedArtists.length);
+    setVisibleCount(nextCount);
+  };
 
   const handleSearchChange = (value: string) => {
     setValue(value);
@@ -55,18 +82,24 @@ const MainPage: FC<IMainPageProps> = ({ artists, isAuth }) => {
     if (!isAuth) return;
 
     const q = value.trim();
+    const selectedGenres = filterState.genres.selectedGenres;
+
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
 
     const t = setTimeout(async () => {
       try {
-        if (!q) {
+        if (!q && selectedGenres.length === 0) {
           setArtistsState(artists);
           return;
         }
 
-        const response = await fetch(`/api/artists?name=${encodeURIComponent(q)}`, {
+        const params = new URLSearchParams();
+        if (q) params.set('name', q);
+        selectedGenres.forEach((id) => params.append('genres', id));
+
+        const response = await fetch(`/api/artists?${params.toString()}`, {
           method: 'GET',
           signal: controller.signal,
         });
@@ -88,7 +121,7 @@ const MainPage: FC<IMainPageProps> = ({ artists, isAuth }) => {
       clearTimeout(t);
       controller.abort();
     };
-  }, [value, isAuth, artists]);
+  }, [value, isAuth, artists, filterState.genres.selectedGenres]);
 
   const handleCardClick = (artistId: string) => {
     const path = isAuth ? `/artists/${artistId}` : `/artists/static/${artistId}`;
@@ -102,9 +135,16 @@ const MainPage: FC<IMainPageProps> = ({ artists, isAuth }) => {
           value={value}
           onChange={handleSearchChange}
           onAddArtist={() => openModal('addArtist')}
-          onOpenFilter={() => openModal('filter')}
+          onOpenFilter={() => {
+            if (isMobile) {
+              openModal('filter');
+            } else {
+              setFilterState((prev) => ({ ...prev, isOpen: true }));
+            }
+          }}
         />
       )}
+      {isAuth && <FilterComponent />}
       <Grid>
         {visibleArtists?.map((artist: IArtist) => (
           <Card
@@ -127,6 +167,13 @@ const MainPage: FC<IMainPageProps> = ({ artists, isAuth }) => {
           </div>
         )}
       </Grid>
+      {hasMoreArtists && (
+        <div className={styles.loadButton}>
+          <Button variant="text" onClick={handleLoadMore}>
+            LOAD MORE
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

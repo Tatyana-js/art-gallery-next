@@ -1,27 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { refreshFromCookies, setAuthCookies } from '../_utils/refresh';
+import { refreshFromCookies, setAuthCookies } from '../../../_utils/refresh';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   if (!API_URL) {
     return NextResponse.json({ message: 'NEXT_PUBLIC_API_URL is not set' }, { status: 500 });
   }
 
   const accessToken = request.cookies.get('accessToken')?.value;
-  const isAuth = !!accessToken;
-  const backendPath = isAuth ? '/genres' : '/genres/static';
+  if (!accessToken) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
 
-  const doFetch = async (token?: string) =>
-    await fetch(`${API_URL}${backendPath}`, {
-      method: 'GET',
-      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      cache: 'no-store',
+  const { id } = await ctx.params;
+  const formData = await request.formData();
+
+  const doFetch = async (token: string) =>
+    await fetch(`${API_URL}/artists/${id}/paintings`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
     });
 
   let backendRes = await doFetch(accessToken);
 
-  if (backendRes.status === 401 && isAuth) {
+  if (backendRes.status === 401) {
     const refreshed = await refreshFromCookies(request);
     if (refreshed?.accessToken) {
       backendRes = await doFetch(refreshed.accessToken);

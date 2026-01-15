@@ -1,0 +1,29 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+}
+
+.filterWrapper {
+  width: 50%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 101;
+  background: var(--input-background);
+  color: var(--text-color);
+}
+.closeButton {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 20px;
+  top: 32px;
+}
+@include screen(tablet_lg) {
+  .filterWrapper {
+    width: 492px;
+  }
+}

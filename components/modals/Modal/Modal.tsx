@@ -15,6 +15,8 @@ import AuthModal from '@/app/@modal/(.)auth/login/page';
 import RegisterModal from '@/app/@modal/(.)auth/register/page';
 import ArtistModal from '../ArtistModal/ArtistModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
+import FilterModal from '@/components/modals/Filter/FilterModal';
+import PaintModal from '../PaintModal';
 
 const Modal: FC = () => {
   const { currentModal, closeModal } = useModalStore();
@@ -38,10 +40,14 @@ const Modal: FC = () => {
   useOnClickOutside(drawerRef as React.RefObject<HTMLElement>, () => {
     const activeToasts = document.querySelectorAll('[data-toast]');
     if (activeToasts.length > 0) return;
+    const isAuthModal =
+      currentModal.variant === 'authorization' || currentModal.variant === 'registration';
     closeModal();
-    router.back();
-    if (background) {
-      router.replace(background);
+    if (isAuthModal) {
+      router.back();
+      if (background) {
+        router.replace(background);
+      }
     }
   });
 
@@ -90,6 +96,17 @@ const Modal: FC = () => {
             artist={currentModal.data?.artist}
             type={currentModal.data?.type || 'artist'}
             closeModal={closeModal}
+          />
+        );
+      case 'filter':
+        return <FilterModal />;
+      case 'painting':
+        if (!currentModal.data?.artist?._id) return null;
+        return (
+          <PaintModal
+            artistId={currentModal.data.artist._id}
+            closeModal={() => closeModal()}
+            editingPainting={currentModal.data?.painting}
           />
         );
       default:

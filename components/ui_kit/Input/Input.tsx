@@ -1,4 +1,4 @@
-import { FC, useId } from 'react';
+import { forwardRef, useId } from 'react';
 
 import styles from './Input.module.scss';
 
@@ -9,17 +9,18 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   error?: string;
 }
 
-const Input: FC<InputProps> = ({ label, error, ...props }) => {
-  const id = useId();
+const Input = forwardRef<HTMLInputElement, InputProps>(({ label, error, id, ...props }, ref) => {
+  const autoId = useId();
+  const inputId = id ?? autoId;
 
   return (
     <div className={styles.container}>
       {label && (
-        <label htmlFor={id} className={styles.label}>
+        <label htmlFor={inputId} className={styles.label}>
           {label}
         </label>
       )}
-      <input id={id} className={styles.input} {...props} />
+      <input ref={ref} id={inputId} className={styles.input} {...props} />
       {error && (
         <div className={styles.errorContainer}>
           <div className={styles.errorIcon}>
@@ -30,6 +31,8 @@ const Input: FC<InputProps> = ({ label, error, ...props }) => {
       )}
     </div>
   );
-};
+});
+
+Input.displayName = 'Input';
 
 export default Input;

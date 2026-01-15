@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ModalVariant } from '@/types/types';
+import { IFilterModalState, ModalVariant } from '@/types/types';
 import type IArtist from '@/types/Artist';
 import { IPainting } from '@/types/Artist';
 
@@ -18,12 +18,21 @@ interface ModalStore {
   ) => void;
   closeModal: () => void;
 
+  filterState: IFilterModalState;
+  setFilterState: (updater: (prev: IFilterModalState) => IFilterModalState) => void;
+
   searchValue: string;
   setSearchValue: (value: string) => void;
 }
 
 export const useModalStore = create<ModalStore>((set) => ({
   currentModal: { variant: null },
+
+  filterState: {
+    isOpen: false,
+    genres: { isListOpen: false, selectedGenres: [] },
+    sort: { isSortOpen: false, selected: null },
+  },
 
   searchValue: '',
 
@@ -38,6 +47,11 @@ export const useModalStore = create<ModalStore>((set) => ({
       currentModal: { variant: null, data: undefined },
     });
   },
+
+  setFilterState: (updater) =>
+    set((state) => ({
+      filterState: updater(state.filterState),
+    })),
 
   setSearchValue: (value) => set({ searchValue: value }),
 }));

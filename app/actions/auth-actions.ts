@@ -7,6 +7,7 @@ export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.delete('accessToken');
   cookieStore.delete('refreshToken');
+  cookieStore.delete('fingerprint');
   redirect('/artists/static');
 }
 
@@ -38,6 +39,15 @@ export async function loginAction({ username, password, fingerprint }: Registrat
     }
 
     const data = await response.json();
+
+    cookieStore.set({
+      name: 'fingerprint',
+      value: fingerprint,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 365, // 1 год
+      path: '/',
+    });
 
     cookieStore.set({
       name: 'accessToken',
@@ -78,6 +88,15 @@ export async function registrationAction({ username, password, fingerprint }: Re
     }
 
     const data = await response.json();
+
+    cookieStore.set({
+      name: 'fingerprint',
+      value: fingerprint,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 365, // 1 год
+      path: '/',
+    });
 
     cookieStore.set({
       name: 'accessToken',

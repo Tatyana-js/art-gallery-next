@@ -1,5 +1,5 @@
 import { BaseSyntheticEvent, FC, useEffect, useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from './ArtistForm.module.scss';
 import Loader from '@/components/ui_kit/Loader';
 import { ICreateArtistRequest, IGenre } from '@/types/Artist';
@@ -16,7 +16,6 @@ interface IArtistFormProps {
 
 const AddArtistForm: FC<IArtistFormProps> = ({ onSubmit, isLoading }) => {
   const {
-    register,
     formState: { errors },
     setValue,
     control,
@@ -44,24 +43,49 @@ const AddArtistForm: FC<IArtistFormProps> = ({ onSubmit, isLoading }) => {
 
   return (
     <form className={styles.formContainer} onSubmit={onSubmit}>
-      <Input
-        label="Name*"
-        type="name"
-        {...register('name')}
-        placeholder="Ivan Aivazovsky"
-        error={errors.name?.message}
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <Input
+            label="Name*"
+            type="text"
+            placeholder="Ivan Aivazovsky"
+            error={errors.name?.message}
+            {...field}
+            value={field.value ?? ''}
+          />
+        )}
       />
-      <Input
-        label="Years of life"
-        type="text"
-        {...register('yearsOfLife')}
-        error={errors.yearsOfLife?.message}
+
+      <Controller
+        name="yearsOfLife"
+        control={control}
+        render={({ field }) => (
+          <Input
+            label="Years of life"
+            type="text"
+            error={errors.yearsOfLife?.message}
+            {...field}
+            value={field.value ?? ''}
+          />
+        )}
       />
-      <Input label="Location" type="text" {...register('location')} />
-      <TextArea
-        label="Description"
-        {...register('description')}
-        error={errors.description?.message}
+
+      <Controller
+        name="location"
+        control={control}
+        render={({ field }) => (
+          <Input label="Location" type="text" {...field} value={field.value ?? ''} />
+        )}
+      />
+
+      <Controller
+        name="description"
+        control={control}
+        render={({ field }) => (
+          <TextArea label="Description" error={errors.description?.message} {...field} />
+        )}
       />
       <MultiSelect
         genres={genresData}

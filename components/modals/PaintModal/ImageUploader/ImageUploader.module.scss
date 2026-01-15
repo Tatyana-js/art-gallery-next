@@ -1,6 +1,3 @@
-@use '@/styles/variables.scss' as *;
-@use '@/styles/mixins.scss' as *;
-
 .dropContainer {
   width: 280px;
   height: 187px;
@@ -22,19 +19,14 @@
 .cardForImg {
   width: 100%;
   height: 187px;
-  border: 1px dashed $primary-dark-gray;
+  border: 1px dashed var(--primary-dark-gray);
   display: flex;
   flex-direction: column;
   gap: 20px;
   justify-content: center;
   align-items: center;
   position: relative;
-  &--light {
-    background-color: $secondary-white;
-  }
-  &--dark {
-    background-color: $primary-black;
-  }
+  background-color: var(--checkbox-background);
 }
 .previewImage {
   width: 60px;
@@ -58,27 +50,17 @@
   button {
     @include fonts('Inter', sans-serif, 500, 16px, 140%);
   }
-  color: $primary-dark-gray;
+  color: var(--primary-dark-gray);
   text-align: center;
   @include fonts('Inter', sans-serif, 300, 12px, 140%);
-  &--ligth {
-    color: $secondary-gray;
-  }
-  &--dark {
-    color: $primary-dark-gray;
-  }
+  color: var(--input-hover);
 }
 .dropMessage {
   display: none;
 }
 .uploudMessage {
   @include fonts('Inter', sans-serif, 300, 12px, 140%);
-  &--light {
-    color: $secondary-gray;
-  }
-  &--dark {
-    color: $primary-dark-gray;
-  }
+  color: var(--input-hover);
 }
 @include screen(tablet) {
   .dropContainer {

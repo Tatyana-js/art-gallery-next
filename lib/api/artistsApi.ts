@@ -1,61 +1,46 @@
 import { cache } from 'react';
 import type IArtist from '@/types/Artist';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+async function getInternalApiRequest(path: string): Promise<{
+  url: string;
+  init?: RequestInit;
+}> {
+  if (typeof window !== 'undefined') return { url: path };
 
-async function getToken(): Promise<{ token: string | undefined; isAuth: boolean }> {
-  const { cookies } = await import('next/headers');
-  const cookieStore = await cookies();
-  const token = cookieStore.get('accessToken')?.value;
-  return { token, isAuth: !!token };
+  const { headers } = await import('next/headers');
+  const h = await headers();
+  const proto = h.get('x-forwarded-proto') ?? 'http';
+  const host = h.get('x-forwarded-host') ?? h.get('host');
+  if (!host) throw new Error('Cannot determine request host for internal API fetch');
+
+  const cookie = h.get('cookie') ?? '';
+  return {
+    url: `${proto}://${host}${path}`,
+    init: cookie ? { headers: { cookie } } : undefined,
+  };
 }
 
 export const getArtists = cache(
   async (params?: { name?: string; genres?: string[]; sort?: string }) => {
-    const { token, isAuth } = await getToken();
-
-    const endpoint = isAuth ? '/artists' : '/artists/static/';
     const searchParams = new URLSearchParams();
     if (params?.name) searchParams.append('name', params.name);
     if (params?.sort) searchParams.append('sort', params.sort);
     if (params?.genres && params.genres.length > 0) {
-      params.genres.forEach((genre) => {
-        searchParams.append('genres', genre);
-      });
+      params.genres.forEach((genre) => searchParams.append('genres', genre));
     }
-
-    const queryString = searchParams.toString();
-    const baseEndpoint = queryString ? `${endpoint}?${queryString}` : endpoint;
-
-    const url = `${API_URL}${baseEndpoint}`;
+    const qs = searchParams.toString();
+    const { url, init } = await getInternalApiRequest(qs ? `/api/artists?${qs}` : '/api/artists');
 
     try {
-      const response = await fetch(url, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        cache: 'no-store',
-      });
-
-      if (!response.ok) {
-        if (isAuth) {
-          const staticUrl = `${API_URL}/artists/static/`;
-          const staticResponse = await fetch(staticUrl, {
-            headers: { 'Content-Type': 'application/json' },
-            cache: 'no-store',
-          });
-
-          if (staticResponse.ok) {
-            const data = await staticResponse.json();
-            return Array.isArray(data) ? data : data.data || data.artists || [];
-          }
-        }
-        return [];
+      const response = await fetch(url, { ...init, cache: 'no-store' });
+      const data = (await response.json().catch(() => null)) as unknown;
+      if (!response.ok) return [];
+      if (Array.isArray(data)) return data as IArtist[];
+      if (data && typeof data === 'object') {
+        const obj = data as { data?: unknown; artists?: unknown };
+        if (Array.isArray(obj.data)) return obj.data as IArtist[];
       }
-
-      const data = await response.json();
-      return Array.isArray(data) ? data : data.data || data.artists || [];
+      return [];
     } catch (error) {
       console.error('Error:', error);
       return [];
@@ -64,26 +49,13 @@ export const getArtists = cache(
 );
 
 export const getArtistById = cache(async (id: string | undefined): Promise<IArtist | null> => {
-  const { token, isAuth } = await getToken();
-
-  const endpoint = isAuth ? `/artists/${id}` : `/artists/static/${id}`;
-  const url = `${API_URL}${endpoint}`;
-
   try {
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-      cache: 'no-store',
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const data = await response.json();
-    return data;
+    if (!id) return null;
+    const { url, init } = await getInternalApiRequest(`/api/artists/${id}`);
+    const response = await fetch(url, { ...init, cache: 'no-store' });
+    if (!response.ok) return null;
+    const data = (await response.json().catch(() => null)) as unknown;
+    return data as IArtist;
   } catch (error) {
     console.error('Error fetching artist by id:', error);
     return null;
@@ -111,36 +83,105 @@ export const createArtist = async (formData: FormData) => {
 };
 
 export const updateArtist = async (id: string, formData: FormData) => {
-  try {
-    const response = await fetch(`/api/artists/${id}`, {
-      method: 'PUT',
-      body: formData,
-    });
-    if (!response.ok) {
-      throw new Error('Failed to update artist');
-    }
-    const data = await response.json();
+  const response = await fetch(`/api/artists/${id}`, {
+    method: 'PUT',
+    body: formData,
+  });
 
-    return data;
-  } catch (error) {
-    console.error('Error updating artist:', error);
-    return null;
+  const data = (await response.json().catch(() => null)) as unknown;
+  if (!response.ok) {
+    const message =
+      data &&
+      typeof data === 'object' &&
+      'message' in data &&
+      typeof (data as { message?: unknown }).message === 'string'
+        ? (data as { message: string }).message
+        : undefined;
+    throw new Error(message || 'Failed to update artist');
   }
+  return data;
 };
 
 export const deleteArtist = async (id: string) => {
-  try {
-    const response = await fetch(`/api/artists/${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      throw new Error('Failed to delete artist');
-    }
-    const data = await response.json();
+  const response = await fetch(`/api/artists/${id}`, {
+    method: 'DELETE',
+  });
 
-    return data;
-  } catch (error) {
-    console.error('Error deleting artist:', error);
-    return null;
+  const data = (await response.json().catch(() => null)) as unknown;
+  if (!response.ok) {
+    const message =
+      data &&
+      typeof data === 'object' &&
+      'message' in data &&
+      typeof (data as { message?: unknown }).message === 'string'
+        ? (data as { message: string }).message
+        : undefined;
+    throw new Error(message || 'Failed to delete artist');
   }
+  return data;
+};
+
+// === PAINTINGS ===
+
+export const addArtistPainting = async (artistId: string, formData: FormData) => {
+  const response = await fetch(`/api/artists/${artistId}/paintings`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  const data = (await response.json().catch(() => null)) as unknown;
+  if (!response.ok) {
+    const message =
+      data &&
+      typeof data === 'object' &&
+      'message' in data &&
+      typeof (data as { message?: unknown }).message === 'string'
+        ? (data as { message: string }).message
+        : undefined;
+    throw new Error(message || 'Failed to add painting');
+  }
+  return data;
+};
+
+export const updateArtistPainting = async (
+  artistId: string,
+  paintingId: string,
+  formData: FormData
+) => {
+  const response = await fetch(`/api/artists/${artistId}/paintings/${paintingId}`, {
+    method: 'PUT',
+    body: formData,
+  });
+
+  const data = (await response.json().catch(() => null)) as unknown;
+  if (!response.ok) {
+    const message =
+      data &&
+      typeof data === 'object' &&
+      'message' in data &&
+      typeof (data as { message?: unknown }).message === 'string'
+        ? (data as { message: string }).message
+        : undefined;
+    throw new Error(message || 'Failed to update painting');
+  }
+  return data;
+};
+
+export const deleteArtistPainting = async (artistId: string, paintingId: string) => {
+  const response = await fetch(`/api/artists/${artistId}/paintings/${paintingId}`, {
+    method: 'DELETE',
+  });
+
+  const data = (await response.json().catch(() => null)) as unknown;
+  if (!response.ok) {
+    const message =
+      data &&
+      typeof data === 'object' &&
+      'message' in data &&
+      typeof (data as { message?: unknown }).message === 'string'
+        ? (data as { message: string }).message
+        : undefined;
+    throw new Error(message || 'Failed to delete painting');
+  }
+  return data;
 };

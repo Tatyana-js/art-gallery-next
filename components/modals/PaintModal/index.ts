@@ -1,1 +1,1 @@
-// export { default } from './PaintModal';
+export { default } from './PaintModal';

@@ -1,33 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { refreshFromCookies, setAuthCookies } from '../_utils/refresh';
+import { refreshFromCookies, setAuthCookies } from '../../../../_utils/refresh';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function GET(request: NextRequest) {
+export async function PUT(
+  request: NextRequest,
+  ctx: { params: Promise<{ id: string; paintingId: string }> }
+) {
   if (!API_URL) {
     return NextResponse.json({ message: 'NEXT_PUBLIC_API_URL is not set' }, { status: 500 });
   }
 
   const accessToken = request.cookies.get('accessToken')?.value;
-  const isAuth = !!accessToken;
+  if (!accessToken) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
 
-  const endpoint = isAuth ? '/artists' : '/artists/static/';
-  const queryString = request.nextUrl.searchParams.toString();
-  const url = queryString ? `${API_URL}${endpoint}?${queryString}` : `${API_URL}${endpoint}`;
+  const { id, paintingId } = await ctx.params;
+  const formData = await request.formData();
 
-  const doFetch = async (token?: string) =>
-    await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-      cache: 'no-store',
+  const doFetch = async (token: string) =>
+    await fetch(`${API_URL}/artists/${id}/paintings/${paintingId}`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
     });
 
   let backendRes = await doFetch(accessToken);
 
-  if (backendRes.status === 401 && isAuth) {
+  if (backendRes.status === 401) {
     const refreshed = await refreshFromCookies(request);
     if (refreshed?.accessToken) {
       backendRes = await doFetch(refreshed.accessToken);
@@ -42,7 +43,10 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(data, { status: backendRes.status });
 }
 
-export async function POST(request: NextRequest) {
+export async function DELETE(
+  request: NextRequest,
+  ctx: { params: Promise<{ id: string; paintingId: string }> }
+) {
   if (!API_URL) {
     return NextResponse.json({ message: 'NEXT_PUBLIC_API_URL is not set' }, { status: 500 });
   }
@@ -52,15 +56,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const formData = await request.formData();
+  const { id, paintingId } = await ctx.params;
 
   const doFetch = async (token: string) =>
-    await fetch(`${API_URL}/artists`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
+    await fetch(`${API_URL}/artists/${id}/paintings/${paintingId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
     });
 
   let backendRes = await doFetch(accessToken);

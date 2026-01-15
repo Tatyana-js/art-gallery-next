@@ -11,11 +11,12 @@ import Card from '@/components/ui_kit/Card';
 import Grid from '@/components/ui_kit/Grid';
 import PlusIcon from '@/components/icons/PlusIcon';
 
-// import DeleteModal from '@/components/modals/DeleteModal';
+import DeleteModal from '@/components/modals/DeleteModal';
 // import Pagination from '@/components/shared/Pagination';
-// import PaintModal from '@/components/modals/PaintModal';
+import PaintModal from '@/components/modals/PaintModal';
 // import Skeletons from '../Skeletons';
 import SliderPaintings from '@/components/shared/SliderPaintings';
+import { useModalStore } from '@/lib/modalStore/modalStore';
 
 interface IPaintingsGalleryProps {
   artist: IArtist;
@@ -27,23 +28,17 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
   const [isEditModal, setEditModal] = useState<boolean>(false);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  // TODO: Implement modals using modal store
   const [isDeleteModal, setDeleteModal] = useState<boolean>(false);
 
-  // const [updateMainPainting] = useUpdateArtistMainPaintingMutation();
+  const { openModal, currentModal } = useModalStore();
 
   const { paintings } = artist;
-  const currentPainting =
-    currentIndex !== null ? paintings[currentIndex] : undefined;
+  const currentPainting = currentIndex !== null ? paintings[currentIndex] : undefined;
 
   const isMobile = useMediaQuery('(max-width: 1024px)');
 
-  const handleSetMainPainting = (paintId: string) => {
+  const handleSetMainPainting = () => {
     // TODO: Implement updateMainPainting API call
-    // updateMainPainting({
-    //   id: artist._id,
-    //   paintingId: paintId,
-    // });
   };
 
   return (
@@ -52,7 +47,7 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
         <h3 className={styles.workTitle}>Artworks</h3>
         {isAuth && paintings?.length && (
           <div className={styles.addPicture}>
-            <Button variant="text" onClick={() => setEditModal(true)}>
+            <Button variant="text" onClick={() => openModal('painting', { artist })}>
               <PlusIcon />
               ADD PICTURE
             </Button>
@@ -88,14 +83,17 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
                       setDeleteModal(true);
                       setCurrentIndex(index);
                     }}
-                    onSetMainPaint={() => handleSetMainPainting(painting._id)}
+                    onSetMainPaint={() => handleSetMainPainting()}
                   />
                 )}
               </div>
             ))}
           </Grid>
         ) : (
-          <EmptyPaintings onAddPaint={() => setEditModal(true)} isPaintModalOpen={false} />
+          <EmptyPaintings
+            onAddPaint={() => openModal('painting', { artist })}
+            isPaintModalOpen={currentModal.variant === 'painting'}
+          />
         )}
       </div>
       {/* {paintings.length >= 6 && (
@@ -105,25 +103,21 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
           totalPages={paintings.length}
         />
       )} */}
-      {/* {isEditModal && (
-        <Modal variant="painting" closeModal={() => setEditModal(false)}>
-          <PaintModal
-            artistId={artist._id}
-            closeModal={() => setEditModal(false)}
-            editingPainting={currentIndex !== null ? paintings[currentIndex] : undefined}
-          />
-        </Modal>
+      {isEditModal && (
+        <PaintModal
+          artistId={artist._id}
+          closeModal={() => setEditModal(false)}
+          editingPainting={currentIndex !== null ? paintings[currentIndex] : undefined}
+        />
       )}
       {isDeleteModal && (
-        <Modal variant="deleteArtist" closeModal={() => setDeleteModal(false)}>
-          <DeleteModal
-            closeModal={() => setDeleteModal(false)}
-            artist={artist}
-            type="painting"
-            painting={currentIndex !== null ? paintings[currentIndex] : undefined}
-          />
-        </Modal>
-      )} */}
+        <DeleteModal
+          closeModal={() => setDeleteModal(false)}
+          artist={artist}
+          type="painting"
+          painting={currentIndex !== null ? paintings[currentIndex] : undefined}
+        />
+      )}
       {isSliderOpen && (
         <SliderPaintings
           artist={artist}
@@ -135,7 +129,7 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
           onPaintModal={() => setEditModal(true)}
           onSetMainPaint={() => {
             if (currentPainting?._id) {
-              handleSetMainPainting(currentPainting._id);
+              handleSetMainPainting();
             }
           }}
           currentIndex={currentIndex}
