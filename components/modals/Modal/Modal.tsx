@@ -94,6 +94,7 @@ const Modal: FC = () => {
         return (
           <DeleteModal
             artist={currentModal.data?.artist}
+            painting={currentModal.data?.painting}
             type={currentModal.data?.type || 'artist'}
             closeModal={closeModal}
           />

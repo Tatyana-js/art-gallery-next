@@ -1,4 +1,4 @@
-import { getArtists } from '@/lib/api/artistsApi';
+import { getArtists } from '@/lib/api/artists';
 import MainPage from '@/components/shared/MainPage/MainPage';
 import { headers } from 'next/headers';
 

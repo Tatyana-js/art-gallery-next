@@ -2,7 +2,8 @@
 
 import { FC } from 'react';
 import { useRouter } from 'next/navigation';
-import { deleteArtist } from '@/lib/api/artistsApi';
+import { deleteArtist } from '@/lib/api/artists';
+import { deleteArtistPainting } from '@/lib/api/paintings';
 import styles from './DeleteModal.module.scss';
 import IArtist, { IPainting } from '@/types/Artist';
 import Button from '@/components/ui_kit/Buttons';
@@ -25,8 +26,9 @@ const DeleteModal: FC<IDeleteModalProps> = ({ artist, painting, closeModal, type
         closeModal?.();
         router.push('/artists');
       } else if (type === 'painting' && painting && artist?._id) {
-        // TODO: Implement delete painting functionality
+        await deleteArtistPainting(artist._id, painting._id);
         closeModal?.();
+        router.refresh();
       }
     } catch (error) {
       console.error('Failed to delete:', error);

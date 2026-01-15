@@ -10,13 +10,10 @@ import Button from '@/components/ui_kit/Buttons';
 import Card from '@/components/ui_kit/Card';
 import Grid from '@/components/ui_kit/Grid';
 import PlusIcon from '@/components/icons/PlusIcon';
-
-import DeleteModal from '@/components/modals/DeleteModal';
-// import Pagination from '@/components/shared/Pagination';
-import PaintModal from '@/components/modals/PaintModal';
-// import Skeletons from '../Skeletons';
+import Pagination from '@/components/shared/Pagination';
 import SliderPaintings from '@/components/shared/SliderPaintings';
 import { useModalStore } from '@/lib/modalStore/modalStore';
+import { updateArtistMainPainting } from '@/lib/api/paintings';
 
 interface IPaintingsGalleryProps {
   artist: IArtist;
@@ -25,10 +22,8 @@ interface IPaintingsGalleryProps {
 
 const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [isEditModal, setEditModal] = useState<boolean>(false);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  const [isDeleteModal, setDeleteModal] = useState<boolean>(false);
 
   const { openModal, currentModal } = useModalStore();
 
@@ -37,8 +32,8 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
 
   const isMobile = useMediaQuery('(max-width: 1024px)');
 
-  const handleSetMainPainting = () => {
-    // TODO: Implement updateMainPainting API call
+  const handleSetMainPainting = async (paintId: string) => {
+    await updateArtistMainPainting(artist._id, paintId);
   };
 
   return (
@@ -76,14 +71,14 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
                 {isAuth && (isMobile || hoveredCardId === painting._id) && (
                   <SettingPaintButton
                     onEdit={() => {
-                      setEditModal(true);
+                      openModal('painting', { artist, painting });
                       setCurrentIndex(index);
                     }}
                     onDelete={() => {
-                      setDeleteModal(true);
+                      openModal('deleteArtist', { artist, painting, type: 'painting' });
                       setCurrentIndex(index);
                     }}
-                    onSetMainPaint={() => handleSetMainPainting()}
+                    onSetMainPaint={() => handleSetMainPainting(painting._id)}
                   />
                 )}
               </div>
@@ -96,26 +91,11 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
           />
         )}
       </div>
-      {/* {paintings.length >= 6 && (
+      {paintings.length >= 6 && (
         <Pagination
           currentIndex={currentIndex ?? 0}
           setCurrentIndex={setCurrentIndex}
           totalPages={paintings.length}
-        />
-      )} */}
-      {isEditModal && (
-        <PaintModal
-          artistId={artist._id}
-          closeModal={() => setEditModal(false)}
-          editingPainting={currentIndex !== null ? paintings[currentIndex] : undefined}
-        />
-      )}
-      {isDeleteModal && (
-        <DeleteModal
-          closeModal={() => setDeleteModal(false)}
-          artist={artist}
-          type="painting"
-          painting={currentIndex !== null ? paintings[currentIndex] : undefined}
         />
       )}
       {isSliderOpen && (
@@ -125,11 +105,9 @@ const PaintingsGallery: FC<IPaintingsGalleryProps> = ({ artist, isAuth }) => {
             setCurrentIndex(null);
             setIsSliderOpen(false);
           }}
-          onDeleteModal={() => setDeleteModal(true)}
-          onPaintModal={() => setEditModal(true)}
           onSetMainPaint={() => {
             if (currentPainting?._id) {
-              handleSetMainPainting();
+              handleSetMainPainting(currentPainting?._id);
             }
           }}
           currentIndex={currentIndex}

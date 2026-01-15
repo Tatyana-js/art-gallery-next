@@ -20,6 +20,7 @@ async function getInternalApiRequest(path: string): Promise<{
   };
 }
 
+// === ARTISTS LIST (main page) ===
 export const getArtists = cache(
   async (params?: { name?: string; genres?: string[]; sort?: string }) => {
     const searchParams = new URLSearchParams();
@@ -48,6 +49,7 @@ export const getArtists = cache(
   }
 );
 
+// === ARTIST PAGE (get main artist page data) ===
 export const getArtistById = cache(async (id: string | undefined): Promise<IArtist | null> => {
   try {
     if (!id) return null;
@@ -62,6 +64,7 @@ export const getArtistById = cache(async (id: string | undefined): Promise<IArti
   }
 });
 
+// === ARTIST MUTATIONS (edit main artist page) ===
 export const createArtist = async (formData: FormData) => {
   const response = await fetch('/api/artists', {
     method: 'POST',
@@ -117,71 +120,6 @@ export const deleteArtist = async (id: string) => {
         ? (data as { message: string }).message
         : undefined;
     throw new Error(message || 'Failed to delete artist');
-  }
-  return data;
-};
-
-// === PAINTINGS ===
-
-export const addArtistPainting = async (artistId: string, formData: FormData) => {
-  const response = await fetch(`/api/artists/${artistId}/paintings`, {
-    method: 'POST',
-    body: formData,
-  });
-
-  const data = (await response.json().catch(() => null)) as unknown;
-  if (!response.ok) {
-    const message =
-      data &&
-      typeof data === 'object' &&
-      'message' in data &&
-      typeof (data as { message?: unknown }).message === 'string'
-        ? (data as { message: string }).message
-        : undefined;
-    throw new Error(message || 'Failed to add painting');
-  }
-  return data;
-};
-
-export const updateArtistPainting = async (
-  artistId: string,
-  paintingId: string,
-  formData: FormData
-) => {
-  const response = await fetch(`/api/artists/${artistId}/paintings/${paintingId}`, {
-    method: 'PUT',
-    body: formData,
-  });
-
-  const data = (await response.json().catch(() => null)) as unknown;
-  if (!response.ok) {
-    const message =
-      data &&
-      typeof data === 'object' &&
-      'message' in data &&
-      typeof (data as { message?: unknown }).message === 'string'
-        ? (data as { message: string }).message
-        : undefined;
-    throw new Error(message || 'Failed to update painting');
-  }
-  return data;
-};
-
-export const deleteArtistPainting = async (artistId: string, paintingId: string) => {
-  const response = await fetch(`/api/artists/${artistId}/paintings/${paintingId}`, {
-    method: 'DELETE',
-  });
-
-  const data = (await response.json().catch(() => null)) as unknown;
-  if (!response.ok) {
-    const message =
-      data &&
-      typeof data === 'object' &&
-      'message' in data &&
-      typeof (data as { message?: unknown }).message === 'string'
-        ? (data as { message: string }).message
-        : undefined;
-    throw new Error(message || 'Failed to delete painting');
   }
   return data;
 };

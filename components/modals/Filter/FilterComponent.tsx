@@ -25,20 +25,20 @@ const FilterComponent: FC = () => {
       />
       <div className={styles.filterWrapper}>
         <FilterModal />
-        <div className={styles.closeButton}>
-          <Button
-            variant="icon"
-            onClick={() =>
+          <div className={styles.closeButton}>
+            <Button
+              variant="icon"
+              onClick={() =>
               setFilterState((prev) => ({
                 ...prev,
                 isOpen: false,
               }))
-            }
-          >
-            <ClearIcon />
-          </Button>
+              }
+            >
+              <ClearIcon />
+            </Button>
+          </div>
         </div>
-      </div>
     </>
   );
 };

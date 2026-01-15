@@ -6,7 +6,7 @@ import styles from './PaintModal.module.scss';
 import { ICreatePaintRequest, IPainting } from '@/types/Artist';
 import Button from '@/components/ui_kit/Buttons';
 import Input from '@/components/ui_kit/Input';
-import { addArtistPainting, updateArtistPainting } from '@/lib/api/artistsApi';
+import { addArtistPainting, updateArtistPainting } from '@/lib/api/paintings';
 
 import getImageSrc from '@/lib/utils/getImageSrc';
 

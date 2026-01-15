@@ -2,7 +2,7 @@ import { FC } from 'react';
 import styles from './page.module.scss';
 import Artist from '@/components/shared/Artist';
 import PaintingsGallery from '@/components/shared/PaintingGallery';
-import { getArtistById } from '@/lib/api/artistsApi';
+import { getArtistById } from '@/lib/api/artists';
 import { headers } from 'next/headers';
 
 interface PageProps {

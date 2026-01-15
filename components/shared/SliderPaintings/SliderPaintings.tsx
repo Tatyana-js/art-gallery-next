@@ -1,18 +1,17 @@
 import { FC } from 'react';
 import Image from 'next/image';
 import styles from './SliderPaintings.module.scss';
-import IArtist, { IPainting } from '@/types/Artist';
+import IArtist from '@/types/Artist';
 import Button from '@/components/ui_kit/Buttons';
 import ClearIcon from '@/components/icons/ClearIcon';
 import DeleteIcon from '@/components/icons/DeleteIcon';
 import EditIcon from '@/components/icons/EditIcon';
 import PreviewIcon from '@/components/icons/PreviewIcon';
 import AnimatedImage from './AnimatedImage';
+import { useModalStore } from '@/lib/modalStore/modalStore';
 
 interface ISliderPaintingsProps {
   artist: IArtist;
-  onDeleteModal: (painting: IPainting) => void;
-  onPaintModal: () => void;
   currentIndex: number | null;
   onSlideChange: (index: number) => void;
   openSlider: () => void;
@@ -21,13 +20,12 @@ interface ISliderPaintingsProps {
 
 const SliderPaintings: FC<ISliderPaintingsProps> = ({
   artist,
-  onDeleteModal,
-  onPaintModal,
   currentIndex,
   onSlideChange,
   openSlider,
   onSetMainPaint,
 }) => {
+  const { openModal } = useModalStore();
   const { paintings, mainPainting } = artist;
   const currentPainting = currentIndex !== null ? paintings[currentIndex] : undefined;
 
@@ -77,10 +75,20 @@ const SliderPaintings: FC<ISliderPaintingsProps> = ({
           <p>{name}</p>
         </div>
         <div className={styles.editButtons}>
-          <Button variant="icon" onClick={onPaintModal}>
+          <Button
+            variant="icon"
+            onClick={() => {
+              openModal('painting', { artist, painting: currentPainting });
+            }}
+          >
             <EditIcon />
           </Button>
-          <Button variant="icon" onClick={() => onDeleteModal(currentPainting)}>
+          <Button
+            variant="icon"
+            onClick={() => {
+              openModal('deleteArtist', { artist, painting: currentPainting, type: 'painting' });
+            }}
+          >
             <DeleteIcon />
           </Button>
         </div>

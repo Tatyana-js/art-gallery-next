@@ -1,7 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { refreshFromCookies, setAuthCookies } from '@/app/api/_utils/refresh';
 
-export function proxy(request: NextRequest) {
+async function tryRefreshIfNeeded(request: NextRequest): Promise<NextResponse | null> {
+  // For page navigations only.
+  if (request.method !== 'GET' && request.method !== 'HEAD') return null;
+
+  const accessToken = request.cookies.get('accessToken')?.value;
+  if (accessToken) return null;
+
+  const tokens = await refreshFromCookies(request);
+  if (!tokens) return null;
+
+  // Redirect back to the same URL so the *next* SSR request sees updated cookies.
+  const res = NextResponse.redirect(request.nextUrl);
+  setAuthCookies(res, tokens);
+  return res;
+}
+
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  const refreshed = await tryRefreshIfNeeded(request);
+  if (refreshed) return refreshed;
+
   const accessToken = request.cookies.get('accessToken')?.value;
   const isAuth = !!accessToken;
 

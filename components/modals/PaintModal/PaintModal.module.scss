@@ -16,16 +16,6 @@
 .inputFile {
   display: none;
 }
-
-.imageError {
-  width: 100%;
-  max-width: 520px;
-  color: #d92d20;
-  font-size: 14px;
-  line-height: 20px;
-  margin-top: -16px;
-  text-align: center;
-}
 @include screen(tablet) {
   .container {
     padding: 80px 100px;

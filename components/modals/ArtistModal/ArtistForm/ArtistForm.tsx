@@ -47,11 +47,11 @@ const AddArtistForm: FC<IArtistFormProps> = ({ onSubmit, isLoading }) => {
         name="name"
         control={control}
         render={({ field }) => (
-          <Input
-            label="Name*"
+      <Input
+        label="Name*"
             type="text"
-            placeholder="Ivan Aivazovsky"
-            error={errors.name?.message}
+        placeholder="Ivan Aivazovsky"
+        error={errors.name?.message}
             {...field}
             value={field.value ?? ''}
           />
@@ -62,10 +62,10 @@ const AddArtistForm: FC<IArtistFormProps> = ({ onSubmit, isLoading }) => {
         name="yearsOfLife"
         control={control}
         render={({ field }) => (
-          <Input
-            label="Years of life"
-            type="text"
-            error={errors.yearsOfLife?.message}
+      <Input
+        label="Years of life"
+        type="text"
+        error={errors.yearsOfLife?.message}
             {...field}
             value={field.value ?? ''}
           />

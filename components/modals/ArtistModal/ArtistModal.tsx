@@ -11,7 +11,7 @@ import { ICreateArtistRequest } from '@/types/Artist';
 import getImageSrc from '@/lib/utils/getImageSrc';
 import ArtistForm from './ArtistForm/ArtistForm';
 import addArtistSchema from './validate';
-import { createArtist, getArtistById, updateArtist } from '@/lib/api/artistsApi';
+import { createArtist, getArtistById, updateArtist } from '@/lib/api/artists';
 import { useModalStore } from '@/lib/modalStore/modalStore';
 
 const ArtistModal: FC = () => {

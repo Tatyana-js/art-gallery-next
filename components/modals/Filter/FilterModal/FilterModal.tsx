@@ -12,14 +12,12 @@ import Button from '@/components/ui_kit/Buttons';
 import MinusIcon from '@/components/icons/MinusIcon';
 import PlusIcon from '@/components/icons/PlusIcon';
 
-import useTheme from '@/hooks/useTheme';
 import { useModalStore } from '@/lib/modalStore/modalStore';
 import { getGenres } from '@/lib/api/genres';
 
 type SortType = 'recently_added' | 'a_to_z' | 'z_to_a' | null;
 
 const FilterModal: FC = () => {
-  const { theme } = useTheme();
   const { filterState, setFilterState, currentModal, closeModal } = useModalStore();
   const { genres, sort } = filterState;
 
